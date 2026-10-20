@@ -25,10 +25,11 @@ The interface follows Berry Camp's map-first approach: a searchable screen list,
 - Right-click a screen for focus/save actions. The selected-screen panel provides the same actions for touch and keyboard use.
 - **Fit world** frames visible content; **1:1** displays one source pixel per CSS pixel.
 - Click the minimap to relocate. Settings toggle screen boundaries and the minimap.
+- Use **Normal / In game** above the map to switch imagery while keeping your position, zoom and selected screen. The gameplay version currently contains 88 candidate room matches from the 20 October recording; other rooms use the normal image. The selected-screen preview identifies captures and fallback imagery. Historical layouts support Normal only.
 - Focus the main canvas for arrow-key panning, `+` / `-` zoom, `0` to fit, and Escape to clear selection.
 - Use the header menu button to show or hide the screen browser. Drag its divider to resize it on desktop; focus the divider and use arrow keys for keyboard resizing. Historical atlases are selected with the date dropdown.
 - **Save screen** exports the untouched 320 × 176 atlas slice. **Save visible map** exports visible source imagery at native resolution, without UI or highlight overlays.
-- The URL automatically records `map`, `top`, `bottom`, `left`, `right` and optional `room`. **Share** copies it. Older `#map=...&x=...&y=...&z=...` links remain readable on initial load.
+- The URL automatically records `map`, `top`, `bottom`, `left`, `right`, optional `room` and `imagery=gameplay` when enabled. **Share** copies it. Older `#map=...&x=...&y=...&z=...` links remain readable on initial load.
 
 Screen cells are detected from populated 320 × 176 divisions of the flattened atlas. IDs follow the source-image origin and include its outer margins; they are not verified game room names. Detection is based on visible pixels and may include artefacts or omit visually empty cells. This does not establish completeness of all game areas. Canvas X increases rightwards and Y downwards, with no inversion or rotation. Downsampling is smoothed to avoid moiré; magnified pixels stay crisp.
 
@@ -65,6 +66,14 @@ python3 -m unittest discover -s tests -p 'test_capture_matching.py'
 The crop is specific to the first 2784 × 1720 recording: X, Y, width, height. Recalibrate it when the game window or recording dimensions change. The sampler preserves the video, rejects existing output directories and records source timestamps in `capture.json`. Sampling keyframes is efficient but may miss briefly visited rooms.
 
 `matches.json` retains the three highest-ranked candidates per sample, heuristic acceptance thresholds, uncertain samples and the strongest accepted sample per atlas cell. Contact sheets place the captured room beside its atlas candidate for review. Scores are not probabilities, accepted candidates still need inspection, and unmatched samples do not establish that rooms are missing from the atlas. Matching ignores bottom-corner HUD regions and the cursor position from this first recording; it does not remove anything from the exported images. Player, HUD, cursor and animated effects remain intact. No gameplay captures are automatically added to the public map.
+
+The initial 88 candidates have been explicitly included as the optional gameplay version. Its self-contained lossless WebP is approximately 6.97 MB and uses the same 8,320 × 4,576 coordinate system as the normal atlas. Uncaptured cells are pixel-identical to the decoded normal source. `public/gameplay/20261020.json` records room timestamps, matching scores, source crop and the output checksum; the full recording and high-resolution working images remain private in `.local/`. Effects are captured in still frames, not animated. Player, cursor and HUD remain visible, and not every candidate placement has been manually verified.
+
+After extracting full-resolution candidates into a `rooms/rooms.json` manifest, rebuild the public gameplay layer and its generated viewer descriptor with:
+
+```sh
+python3 scripts/build_gameplay_atlas.py .local/capture-analysis/rooms/rooms.json
+```
 
 ## Image provenance and limitations
 

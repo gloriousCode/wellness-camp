@@ -42,7 +42,7 @@ export const Atlas = forwardRef<AtlasHandle, Props>(function Atlas({ content, st
     canvas.toBlob(blob => {
       if (!blob) { onError('This browser could not export the image.'); return; }
       const url = URL.createObjectURL(blob);
-      const link = document.createElement('a'); link.href = url; link.download = `animal-well-${mapId}-${screen ? `screen-${screen.id.replace(',', '-')}` : 'view'}.png`;
+      const link = document.createElement('a'); link.href = url; link.download = `animal-well-${mapId}-${content.gameplayScreens ? 'gameplay-' : ''}${screen ? `screen-${screen.id.replace(',', '-')}` : 'view'}.png`;
       link.click(); setTimeout(() => URL.revokeObjectURL(url), 60_000);
     });
   }, [content, mapId, onError]);

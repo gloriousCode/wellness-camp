@@ -35,3 +35,18 @@ test('viewUrl creates reloadable bounds and room selection beneath a Pages proje
   assert.deepEqual(readView(url.searchParams), bounds);
   assert.equal(viewUrl(url, 'latest', bounds).searchParams.has('room'), false);
 });
+
+test('viewUrl shares gameplay imagery and removes it when returning to normal', () => {
+  const bounds = { top: 704, bottom: 880, left: 640, right: 960 };
+  const gameplay = viewUrl(new URL('https://example.github.io/wellness-camp/?compare=1#old'), 'latest', bounds, '02,04', 'gameplay');
+  assert.equal(gameplay.pathname, '/wellness-camp/');
+  assert.equal(gameplay.searchParams.get('imagery'), 'gameplay');
+  assert.equal(gameplay.searchParams.get('room'), '02,04');
+  assert.equal(gameplay.searchParams.has('compare'), false);
+  assert.equal(gameplay.hash, '');
+  assert.deepEqual(readView(gameplay.searchParams), bounds);
+  const normal = viewUrl(gameplay, 'latest', bounds, '02,04', 'normal');
+  assert.equal(normal.searchParams.has('imagery'), false);
+  assert.equal(normal.searchParams.get('room'), '02,04');
+  assert.equal(viewUrl(gameplay, 'latest', bounds).searchParams.has('imagery'), false);
+});

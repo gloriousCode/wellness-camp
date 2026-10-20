@@ -5,7 +5,8 @@ export interface Size { width: number; height: number }
 export interface Bounds { x: number; y: number; width: number; height: number }
 export interface Screen extends Bounds { id: string; column: number; row: number }
 export interface WorldView { top: number; bottom: number; left: number; right: number }
-export interface AtlasContent { image: HTMLImageElement; bounds: Bounds; screens: Screen[] }
+export type ImageryMode = 'normal' | 'gameplay';
+export interface AtlasContent { image: HTMLImageElement; bounds: Bounds; screens: Screen[]; gameplayScreens?: ReadonlySet<string> }
 export interface AtlasHandle {
   zoom: (factor: number) => void;
   fit: () => void;
