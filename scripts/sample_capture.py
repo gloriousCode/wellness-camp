@@ -16,6 +16,7 @@ def main():
     parser.add_argument("output", type=Path, help="New directory for private analysis files")
     parser.add_argument("--crop", nargs=4, type=int, required=True, metavar=("X", "Y", "WIDTH", "HEIGHT"))
     parser.add_argument("--interval", type=float, default=2, help="Minimum seconds between sampled keyframes")
+    parser.add_argument("--all-frames", action="store_true", help="Decode between keyframes for denser temporal analysis")
     args = parser.parse_args()
     if not args.video.is_file() or not math.isfinite(args.interval) or args.interval <= 0:
         parser.error("A readable recording and a positive interval are required")
@@ -38,7 +39,7 @@ def main():
         f"showinfo,crop={width}:{height}:{x}:{y},scale=320:176:flags=area"
     )
     result = subprocess.run([
-        ffmpeg, "-hide_banner", "-nostats", "-loglevel", "info", "-skip_frame", "nokey",
+        ffmpeg, "-hide_banner", "-nostats", "-loglevel", "info", *([] if args.all_frames else ["-skip_frame", "nokey"]),
         "-i", str(args.video), "-map", "0:v:0", "-vf", filters, "-fps_mode", "vfr",
         str(args.output / "frame-%04d.png"),
     ], stdout=subprocess.DEVNULL, stderr=subprocess.PIPE, text=True)
@@ -55,7 +56,7 @@ def main():
     manifest = {
         "video": str(args.video.resolve()), "metadata": metadata, "crop": args.crop,
         "sample_size": [320, 176], "minimum_interval_seconds": args.interval,
-        "sampling": "Actual keyframes only; timestamps come from decoded frame PTS, not frame numbering",
+        "sampling": ("All decoded frames" if args.all_frames else "Actual keyframes only") + "; timestamps come from decoded frame PTS, not frame numbering",
         "frames": samples,
     }
     (args.output / "capture.json").write_text(json.dumps(manifest, indent=2) + "\n")

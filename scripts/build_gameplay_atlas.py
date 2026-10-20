@@ -31,7 +31,10 @@ def main():
             if list(image.size) != source["image_size"]:
                 raise ValueError(f"Unexpected source size: {room['image']}")
             atlas.paste(image.convert("RGB").resize((320, 176), Image.Resampling.BOX), (x, y))
-        rooms.append({"id": room_id, "seconds": room["seconds"], "score": room["score"], "margin": room["margin"]})
+        entry = {"id": room_id, "seconds": room["seconds"], "score": room["score"], "margin": room["margin"]}
+        if room.get("temporalMerge"):
+            entry["temporalMerge"] = room["temporalMerge"]
+        rooms.append(entry)
     output = Path("public/gameplay")
     output.mkdir(parents=True, exist_ok=True)
     name = args.date.replace("-", "")
@@ -39,13 +42,14 @@ def main():
     # Lossless encoding keeps uncaptured cells identical to the decoded normal atlas.
     atlas.save(file, lossless=True, method=4)
     descriptor = {"mapId": args.map_id, "file": f"gameplay/{name}.webp", "date": args.date,
-                  "roomIds": [room["id"] for room in rooms]}
+                  "roomIds": [room["id"] for room in rooms],
+                  "mergedRoomIds": [room["id"] for room in rooms if room.get("temporalMerge")]}
     metadata = {**descriptor, "sourceRecording": Path(source["recording"]).name,
                 "sourceCrop": source["crop"], "width": atlas.width, "height": atlas.height,
                 "bytes": file.stat().st_size, "sha256": hashlib.sha256(file.read_bytes()).hexdigest(),
                 "status": "Candidate room matches; not all placements have been manually verified",
                 "fallback": "Uncaptured cells retain the normal atlas",
-                "cleanup": "None; player, HUD, cursor and gameplay effects remain",
+                "cleanup": source.get("processing", "None; player, HUD, cursor and gameplay effects remain"),
                 "rooms": rooms}
     (output / f"{name}.json").write_text(json.dumps(metadata, indent=2) + "\n")
     Path("src/gameplay.ts").write_text(

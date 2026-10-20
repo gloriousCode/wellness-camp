@@ -67,13 +67,39 @@ The crop is specific to the first 2784 × 1720 recording: X, Y, width, height. R
 
 `matches.json` retains the three highest-ranked candidates per sample, heuristic acceptance thresholds, uncertain samples and the strongest accepted sample per atlas cell. Contact sheets place the captured room beside its atlas candidate for review. Scores are not probabilities, accepted candidates still need inspection, and unmatched samples do not establish that rooms are missing from the atlas. Matching ignores bottom-corner HUD regions and the cursor position from this first recording; it does not remove anything from the exported images. Player, HUD, cursor and animated effects remain intact. No gameplay captures are automatically added to the public map.
 
-The initial 88 candidates have been explicitly included as the optional gameplay version. Its self-contained lossless WebP is approximately 6.97 MB and uses the same 8,320 × 4,576 coordinate system as the normal atlas. Uncaptured cells are pixel-identical to the decoded normal source. `public/gameplay/20261020.json` records room timestamps, matching scores, source crop and the output checksum; the full recording and high-resolution working images remain private in `.local/`. Effects are captured in still frames, not animated. Player, cursor and HUD remain visible, and not every candidate placement has been manually verified.
+The initial 88 candidates have been explicitly included as the optional gameplay version. Its self-contained lossless WebP is approximately 6.81 MB and uses the same 8,320 × 4,576 coordinate system as the normal atlas. Uncaptured cells are pixel-identical to the decoded normal source. `public/gameplay/20261020.json` records room timestamps, matching scores, source crop and the output checksum; the full recording and high-resolution working images remain private in `.local/`. Effects are captured in still frames, not animated. Player, cursor and HUD remain visible, and not every candidate placement has been manually verified.
 
 After extracting full-resolution candidates into a `rooms/rooms.json` manifest, rebuild the public gameplay layer and its generated viewer descriptor with:
 
 ```sh
 python3 scripts/build_gameplay_atlas.py .local/capture-analysis/rooms/rooms.json
 ```
+
+### Combine clouded and revealed areas
+
+Sixteen of the existing 88 captured cells now combine repeatedly revealed areas from multiple frames. The selected-screen preview labels these **Combined in-game captures**. Other captured cells retain their original images. This can improve visibility where lighting or cloud cover changes during traversal; unseen areas stay dark, and lighting seams or persistent objects can remain.
+
+`scripts/merge_capture.py` considers only accepted room matches with structural agreement, and copies a clearer 16 × 16 patch only when another temporally separate frame supports it. It copies sampled RGB pixels exactly, rather than taking each pixel's maximum brightness or generating missing detail. The bottom HUD strip and fixed cursor area remain from the base frame. Source-index maps and timestamped patch provenance make each change traceable. Synthetic tests cover complementary reveals, transient bright outliers and insufficient samples.
+
+To repeat the denser analysis, use a new output directory for each step:
+
+```sh
+python3 scripts/sample_capture.py \
+  '.local/recordings/Screen Recording 2026-10-20 at 13.48.06.mov' \
+  .local/capture-analysis/dense --crop 112 132 2560 1408 \
+  --all-frames --interval 0.5
+python3 scripts/match_capture.py --frames .local/capture-analysis/dense \
+  --output .local/capture-analysis/dense-matching
+python3 scripts/merge_capture.py \
+  --matches .local/capture-analysis/dense-matching/matches.json \
+  --capture .local/capture-analysis/dense/capture.json \
+  --existing-rooms .local/capture-analysis/rooms/rooms.json \
+  --output .local/capture-analysis/merge-study
+python3 scripts/build_gameplay_atlas.py .local/capture-analysis/merge-study/layer/rooms.json
+python3 -m unittest discover -s tests -p 'test_capture_*.py'
+```
+
+The denser pass also finds additional candidate cells, which remain private and have not been added to the viewer. The existing-room filter keeps the public layer's coverage unchanged. Building from the original `rooms/rooms.json` instead restores the original single-frame gameplay version.
 
 ## Image provenance and limitations
 

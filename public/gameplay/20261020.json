@@ -92,6 +92,24 @@
     "14,19",
     "16,19"
   ],
+  "mergedRoomIds": [
+    "02,04",
+    "05,04",
+    "06,04",
+    "08,04",
+    "10,04",
+    "17,04",
+    "02,05",
+    "02,08",
+    "17,09",
+    "03,13",
+    "04,14",
+    "02,15",
+    "04,15",
+    "02,16",
+    "02,18",
+    "03,19"
+  ],
   "sourceRecording": "Screen Recording 2026-10-20 at 13.48.06.mov",
   "sourceCrop": [
     112,
@@ -101,17 +119,666 @@
   ],
   "width": 8320,
   "height": 4576,
-  "bytes": 6968312,
-  "sha256": "0ea65e8ce035cc967455df4a88191422f64a0cf242a64cb50527d88b8f5e3bb6",
+  "bytes": 6812866,
+  "sha256": "32ded75495d3b86d42c8a97c5db1b9e8bc6693469442ba7f7ce5413b462e7166",
   "status": "Candidate room matches; not all placements have been manually verified",
   "fallback": "Uncaptured cells retain the normal atlas",
-  "cleanup": "None; player, HUD, cursor and gameplay effects remain",
+  "cleanup": "16 rooms combine repeatedly revealed patches from recorded frames; player, HUD, cursor and effects remain",
   "rooms": [
     {
       "id": "02,04",
-      "seconds": 0.0,
-      "score": 0.651367723941803,
-      "margin": 0.11146622896194458
+      "seconds": 22.041667,
+      "score": 0.6573095917701721,
+      "margin": 0.12367188930511475,
+      "temporalMerge": {
+        "originalSeconds": 0.0,
+        "baseSeconds": 22.041667,
+        "changedPixelsFromDenseBase": 9900,
+        "frames": [
+          {
+            "seconds": 0.0
+          },
+          {
+            "seconds": 0.508333
+          },
+          {
+            "seconds": 1.025
+          },
+          {
+            "seconds": 22.041667
+          },
+          {
+            "seconds": 22.541667
+          }
+        ],
+        "patches": [
+          {
+            "rectangle": [
+              96,
+              0,
+              112,
+              16
+            ],
+            "source_index": 2,
+            "support_indices": [
+              0,
+              1
+            ],
+            "detail_before": 18.155536651611328,
+            "detail_after": 22.937164306640625
+          },
+          {
+            "rectangle": [
+              112,
+              0,
+              128,
+              16
+            ],
+            "source_index": 2,
+            "support_indices": [
+              0,
+              1
+            ],
+            "detail_before": 2.173783302307129,
+            "detail_after": 3.9332380294799805
+          },
+          {
+            "rectangle": [
+              128,
+              0,
+              144,
+              16
+            ],
+            "source_index": 2,
+            "support_indices": [
+              0,
+              1
+            ],
+            "detail_before": 0.8950904011726379,
+            "detail_after": 2.9130141735076904
+          },
+          {
+            "rectangle": [
+              144,
+              0,
+              160,
+              16
+            ],
+            "source_index": 2,
+            "support_indices": [
+              0,
+              1
+            ],
+            "detail_before": 0.8918246030807495,
+            "detail_after": 2.5075809955596924
+          },
+          {
+            "rectangle": [
+              160,
+              0,
+              176,
+              16
+            ],
+            "source_index": 2,
+            "support_indices": [
+              0,
+              1,
+              4
+            ],
+            "detail_before": 1.431430459022522,
+            "detail_after": 2.524500846862793
+          },
+          {
+            "rectangle": [
+              96,
+              16,
+              112,
+              32
+            ],
+            "source_index": 1,
+            "support_indices": [
+              0,
+              2
+            ],
+            "detail_before": 3.620664119720459,
+            "detail_after": 5.75590705871582
+          },
+          {
+            "rectangle": [
+              112,
+              16,
+              128,
+              32
+            ],
+            "source_index": 2,
+            "support_indices": [
+              0,
+              1
+            ],
+            "detail_before": 7.214471817016602,
+            "detail_after": 10.140225410461426
+          },
+          {
+            "rectangle": [
+              128,
+              16,
+              144,
+              32
+            ],
+            "source_index": 2,
+            "support_indices": [
+              0,
+              1
+            ],
+            "detail_before": 5.0791778564453125,
+            "detail_after": 9.012992858886719
+          },
+          {
+            "rectangle": [
+              144,
+              16,
+              160,
+              32
+            ],
+            "source_index": 2,
+            "support_indices": [
+              0,
+              1
+            ],
+            "detail_before": 4.440256118774414,
+            "detail_after": 6.87106990814209
+          },
+          {
+            "rectangle": [
+              160,
+              16,
+              176,
+              32
+            ],
+            "source_index": 2,
+            "support_indices": [
+              0,
+              1
+            ],
+            "detail_before": 4.71478796005249,
+            "detail_after": 6.708018779754639
+          },
+          {
+            "rectangle": [
+              96,
+              32,
+              112,
+              48
+            ],
+            "source_index": 1,
+            "support_indices": [
+              0,
+              2
+            ],
+            "detail_before": 15.882333755493164,
+            "detail_after": 19.396984100341797
+          },
+          {
+            "rectangle": [
+              112,
+              32,
+              128,
+              48
+            ],
+            "source_index": 1,
+            "support_indices": [
+              0,
+              2
+            ],
+            "detail_before": 6.085017204284668,
+            "detail_after": 8.03117561340332
+          },
+          {
+            "rectangle": [
+              128,
+              32,
+              144,
+              48
+            ],
+            "source_index": 2,
+            "support_indices": [
+              0,
+              1
+            ],
+            "detail_before": 4.463231563568115,
+            "detail_after": 6.286550521850586
+          },
+          {
+            "rectangle": [
+              144,
+              32,
+              160,
+              48
+            ],
+            "source_index": 1,
+            "support_indices": [
+              0,
+              2
+            ],
+            "detail_before": 4.199182987213135,
+            "detail_after": 6.509153366088867
+          },
+          {
+            "rectangle": [
+              160,
+              32,
+              176,
+              48
+            ],
+            "source_index": 1,
+            "support_indices": [
+              0,
+              2
+            ],
+            "detail_before": 4.193772315979004,
+            "detail_after": 7.024645805358887
+          },
+          {
+            "rectangle": [
+              176,
+              32,
+              192,
+              48
+            ],
+            "source_index": 2,
+            "support_indices": [
+              0,
+              1
+            ],
+            "detail_before": 4.1979780197143555,
+            "detail_after": 7.360725402832031
+          },
+          {
+            "rectangle": [
+              192,
+              32,
+              208,
+              48
+            ],
+            "source_index": 2,
+            "support_indices": [
+              0,
+              1
+            ],
+            "detail_before": 4.187044143676758,
+            "detail_after": 7.432109832763672
+          },
+          {
+            "rectangle": [
+              208,
+              32,
+              224,
+              48
+            ],
+            "source_index": 1,
+            "support_indices": [
+              0,
+              2
+            ],
+            "detail_before": 4.155284881591797,
+            "detail_after": 7.568850517272949
+          },
+          {
+            "rectangle": [
+              224,
+              32,
+              240,
+              48
+            ],
+            "source_index": 2,
+            "support_indices": [
+              0,
+              1
+            ],
+            "detail_before": 9.945363998413086,
+            "detail_after": 15.906290054321289
+          },
+          {
+            "rectangle": [
+              240,
+              32,
+              256,
+              48
+            ],
+            "source_index": 1,
+            "support_indices": [
+              0,
+              2
+            ],
+            "detail_before": 18.21562957763672,
+            "detail_after": 26.235042572021484
+          },
+          {
+            "rectangle": [
+              256,
+              32,
+              272,
+              48
+            ],
+            "source_index": 0,
+            "support_indices": [
+              1,
+              2
+            ],
+            "detail_before": 12.124212265014648,
+            "detail_after": 16.778594970703125
+          },
+          {
+            "rectangle": [
+              272,
+              32,
+              288,
+              48
+            ],
+            "source_index": 1,
+            "support_indices": [
+              0,
+              2,
+              4
+            ],
+            "detail_before": 6.9974470138549805,
+            "detail_after": 9.212382316589355
+          },
+          {
+            "rectangle": [
+              288,
+              32,
+              304,
+              48
+            ],
+            "source_index": 2,
+            "support_indices": [
+              0,
+              1,
+              4
+            ],
+            "detail_before": 15.793172836303711,
+            "detail_after": 20.10634422302246
+          },
+          {
+            "rectangle": [
+              64,
+              48,
+              80,
+              64
+            ],
+            "source_index": 4,
+            "support_indices": [
+              0,
+              1,
+              2
+            ],
+            "detail_before": 18.867996215820312,
+            "detail_after": 23.24181365966797
+          },
+          {
+            "rectangle": [
+              80,
+              48,
+              96,
+              64
+            ],
+            "source_index": 1,
+            "support_indices": [
+              0,
+              2,
+              4
+            ],
+            "detail_before": 17.93633270263672,
+            "detail_after": 22.24356460571289
+          },
+          {
+            "rectangle": [
+              96,
+              48,
+              112,
+              64
+            ],
+            "source_index": 4,
+            "support_indices": [
+              0,
+              1,
+              2
+            ],
+            "detail_before": 17.350040435791016,
+            "detail_after": 21.473323822021484
+          },
+          {
+            "rectangle": [
+              128,
+              48,
+              144,
+              64
+            ],
+            "source_index": 2,
+            "support_indices": [
+              0,
+              1
+            ],
+            "detail_before": 4.417318820953369,
+            "detail_after": 6.350222587585449
+          },
+          {
+            "rectangle": [
+              144,
+              48,
+              160,
+              64
+            ],
+            "source_index": 0,
+            "support_indices": [
+              1,
+              2
+            ],
+            "detail_before": 4.142728805541992,
+            "detail_after": 6.055780410766602
+          },
+          {
+            "rectangle": [
+              160,
+              48,
+              176,
+              64
+            ],
+            "source_index": 1,
+            "support_indices": [
+              0,
+              2
+            ],
+            "detail_before": 4.3465375900268555,
+            "detail_after": 7.656604290008545
+          },
+          {
+            "rectangle": [
+              176,
+              48,
+              192,
+              64
+            ],
+            "source_index": 1,
+            "support_indices": [
+              0,
+              2
+            ],
+            "detail_before": 4.3394575119018555,
+            "detail_after": 7.793606758117676
+          },
+          {
+            "rectangle": [
+              192,
+              48,
+              208,
+              64
+            ],
+            "source_index": 1,
+            "support_indices": [
+              0,
+              2
+            ],
+            "detail_before": 4.366096496582031,
+            "detail_after": 8.047951698303223
+          },
+          {
+            "rectangle": [
+              208,
+              48,
+              224,
+              64
+            ],
+            "source_index": 1,
+            "support_indices": [
+              0,
+              2
+            ],
+            "detail_before": 4.33644962310791,
+            "detail_after": 8.101041793823242
+          },
+          {
+            "rectangle": [
+              224,
+              48,
+              240,
+              64
+            ],
+            "source_index": 1,
+            "support_indices": [
+              0,
+              2
+            ],
+            "detail_before": 10.437300682067871,
+            "detail_after": 16.209121704101562
+          },
+          {
+            "rectangle": [
+              240,
+              48,
+              256,
+              64
+            ],
+            "source_index": 1,
+            "support_indices": [
+              0,
+              2
+            ],
+            "detail_before": 18.318302154541016,
+            "detail_after": 26.470157623291016
+          },
+          {
+            "rectangle": [
+              256,
+              48,
+              272,
+              64
+            ],
+            "source_index": 2,
+            "support_indices": [
+              0,
+              1
+            ],
+            "detail_before": 9.488173484802246,
+            "detail_after": 13.704343795776367
+          },
+          {
+            "rectangle": [
+              16,
+              64,
+              32,
+              80
+            ],
+            "source_index": 1,
+            "support_indices": [
+              0,
+              2
+            ],
+            "detail_before": 1.660770058631897,
+            "detail_after": 3.2337327003479004
+          },
+          {
+            "rectangle": [
+              32,
+              96,
+              48,
+              112
+            ],
+            "source_index": 1,
+            "support_indices": [
+              0,
+              2,
+              4
+            ],
+            "detail_before": 7.67900276184082,
+            "detail_after": 10.060508728027344
+          },
+          {
+            "rectangle": [
+              48,
+              96,
+              64,
+              112
+            ],
+            "source_index": 1,
+            "support_indices": [
+              0,
+              2
+            ],
+            "detail_before": 5.451794624328613,
+            "detail_after": 7.239457130432129
+          },
+          {
+            "rectangle": [
+              80,
+              96,
+              96,
+              112
+            ],
+            "source_index": 4,
+            "support_indices": [
+              0,
+              1,
+              2
+            ],
+            "detail_before": 4.507338523864746,
+            "detail_after": 6.0716094970703125
+          },
+          {
+            "rectangle": [
+              96,
+              96,
+              112,
+              112
+            ],
+            "source_index": 4,
+            "support_indices": [
+              0,
+              1,
+              2
+            ],
+            "detail_before": 12.370920181274414,
+            "detail_after": 15.336700439453125
+          },
+          {
+            "rectangle": [
+              32,
+              112,
+              48,
+              128
+            ],
+            "source_index": 1,
+            "support_indices": [
+              0,
+              2,
+              4
+            ],
+            "detail_before": 8.459709167480469,
+            "detail_after": 10.705062866210938
+          }
+        ]
+      }
     },
     {
       "id": "03,04",
@@ -127,27 +794,203 @@
     },
     {
       "id": "05,04",
-      "seconds": 395.756667,
-      "score": 0.5845214128494263,
-      "margin": 0.1345137059688568
+      "seconds": 395.64,
+      "score": 0.5827069282531738,
+      "margin": 0.13273218274116516,
+      "temporalMerge": {
+        "originalSeconds": 395.756667,
+        "baseSeconds": 395.64,
+        "changedPixelsFromDenseBase": 244,
+        "frames": [
+          {
+            "seconds": 4.541667
+          },
+          {
+            "seconds": 5.041667
+          },
+          {
+            "seconds": 395.64
+          },
+          {
+            "seconds": 396.14
+          }
+        ],
+        "patches": [
+          {
+            "rectangle": [
+              208,
+              48,
+              224,
+              64
+            ],
+            "source_index": 1,
+            "support_indices": [
+              0
+            ],
+            "detail_before": 1.3409175872802734,
+            "detail_after": 2.4077513217926025
+          }
+        ]
+      }
     },
     {
       "id": "06,04",
-      "seconds": 397.773333,
-      "score": 0.6730774641036987,
-      "margin": 0.14393281936645508
+      "seconds": 397.14,
+      "score": 0.6673735976219177,
+      "margin": 0.13697105646133423,
+      "temporalMerge": {
+        "originalSeconds": 397.773333,
+        "baseSeconds": 397.14,
+        "changedPixelsFromDenseBase": 424,
+        "frames": [
+          {
+            "seconds": 5.541667
+          },
+          {
+            "seconds": 6.041667
+          },
+          {
+            "seconds": 6.541667
+          },
+          {
+            "seconds": 397.14
+          },
+          {
+            "seconds": 397.64
+          }
+        ],
+        "patches": [
+          {
+            "rectangle": [
+              240,
+              32,
+              256,
+              48
+            ],
+            "source_index": 2,
+            "support_indices": [
+              0,
+              1
+            ],
+            "detail_before": 3.352059841156006,
+            "detail_after": 4.891157627105713
+          },
+          {
+            "rectangle": [
+              304,
+              32,
+              320,
+              48
+            ],
+            "source_index": 2,
+            "support_indices": [
+              0,
+              1
+            ],
+            "detail_before": 3.9302258491516113,
+            "detail_after": 5.310177326202393
+          }
+        ]
+      }
     },
     {
       "id": "08,04",
-      "seconds": 8.908333,
-      "score": 0.6723116636276245,
-      "margin": 0.1720794439315796
+      "seconds": 399.64,
+      "score": 0.6901117563247681,
+      "margin": 0.1800079345703125,
+      "temporalMerge": {
+        "originalSeconds": 8.908333,
+        "baseSeconds": 399.64,
+        "changedPixelsFromDenseBase": 132,
+        "frames": [
+          {
+            "seconds": 8.541667
+          },
+          {
+            "seconds": 9.041667
+          },
+          {
+            "seconds": 399.64
+          },
+          {
+            "seconds": 400.14
+          }
+        ],
+        "patches": [
+          {
+            "rectangle": [
+              208,
+              0,
+              224,
+              16
+            ],
+            "source_index": 1,
+            "support_indices": [
+              0
+            ],
+            "detail_before": 1.6370595693588257,
+            "detail_after": 3.419644355773926
+          }
+        ]
+      }
     },
     {
       "id": "10,04",
-      "seconds": 403.723333,
-      "score": 0.5928313136100769,
-      "margin": 0.10257241129875183
+      "seconds": 11.541667,
+      "score": 0.5977580547332764,
+      "margin": 0.10324102640151978,
+      "temporalMerge": {
+        "originalSeconds": 403.723333,
+        "baseSeconds": 11.541667,
+        "changedPixelsFromDenseBase": 212,
+        "frames": [
+          {
+            "seconds": 11.041667
+          },
+          {
+            "seconds": 11.541667
+          },
+          {
+            "seconds": 402.14
+          },
+          {
+            "seconds": 402.64
+          },
+          {
+            "seconds": 403.14
+          },
+          {
+            "seconds": 403.64
+          },
+          {
+            "seconds": 404.148333
+          },
+          {
+            "seconds": 404.656667
+          },
+          {
+            "seconds": 405.156667
+          }
+        ],
+        "patches": [
+          {
+            "rectangle": [
+              64,
+              80,
+              80,
+              96
+            ],
+            "source_index": 4,
+            "support_indices": [
+              5,
+              6,
+              7
+            ],
+            "detail_before": 6.229654312133789,
+            "detail_after": 14.72623348236084
+          }
+        ]
+      }
     },
     {
       "id": "12,04",
@@ -169,15 +1012,107 @@
     },
     {
       "id": "17,04",
-      "seconds": 20.908333,
-      "score": 0.6825314164161682,
-      "margin": 0.13928478956222534
+      "seconds": 21.541667,
+      "score": 0.6831932663917542,
+      "margin": 0.13439607620239258,
+      "temporalMerge": {
+        "originalSeconds": 20.908333,
+        "baseSeconds": 21.541667,
+        "changedPixelsFromDenseBase": 213,
+        "frames": [
+          {
+            "seconds": 20.541667
+          },
+          {
+            "seconds": 21.041667
+          },
+          {
+            "seconds": 21.541667
+          }
+        ],
+        "patches": [
+          {
+            "rectangle": [
+              96,
+              128,
+              112,
+              144
+            ],
+            "source_index": 1,
+            "support_indices": [
+              0
+            ],
+            "detail_before": 7.846563816070557,
+            "detail_after": 10.581596374511719
+          }
+        ]
+      }
     },
     {
       "id": "02,05",
-      "seconds": 22.908333,
-      "score": 0.621290922164917,
-      "margin": 0.18685853481292725
+      "seconds": 23.058333,
+      "score": 0.6236374974250793,
+      "margin": 0.19300433993339539,
+      "temporalMerge": {
+        "originalSeconds": 22.908333,
+        "baseSeconds": 23.058333,
+        "changedPixelsFromDenseBase": 506,
+        "frames": [
+          {
+            "seconds": 23.058333
+          },
+          {
+            "seconds": 23.558333
+          },
+          {
+            "seconds": 24.058333
+          },
+          {
+            "seconds": 44.575
+          },
+          {
+            "seconds": 45.075
+          },
+          {
+            "seconds": 45.575
+          },
+          {
+            "seconds": 46.575
+          }
+        ],
+        "patches": [
+          {
+            "rectangle": [
+              0,
+              64,
+              16,
+              80
+            ],
+            "source_index": 5,
+            "support_indices": [
+              4,
+              6
+            ],
+            "detail_before": 6.404848575592041,
+            "detail_after": 8.382156372070312
+          },
+          {
+            "rectangle": [
+              16,
+              64,
+              32,
+              80
+            ],
+            "source_index": 5,
+            "support_indices": [
+              4,
+              6
+            ],
+            "detail_before": 11.621054649353027,
+            "detail_after": 15.632635116577148
+          }
+        ]
+      }
     },
     {
       "id": "04,05",
@@ -301,9 +1236,44 @@
     },
     {
       "id": "02,08",
-      "seconds": 118.291667,
-      "score": 0.5857110023498535,
-      "margin": 0.14577290415763855
+      "seconds": 96.675,
+      "score": 0.5911614894866943,
+      "margin": 0.14547884464263916,
+      "temporalMerge": {
+        "originalSeconds": 118.291667,
+        "baseSeconds": 96.675,
+        "changedPixelsFromDenseBase": 255,
+        "frames": [
+          {
+            "seconds": 96.675
+          },
+          {
+            "seconds": 97.175
+          },
+          {
+            "seconds": 118.175
+          },
+          {
+            "seconds": 118.675
+          }
+        ],
+        "patches": [
+          {
+            "rectangle": [
+              208,
+              96,
+              224,
+              112
+            ],
+            "source_index": 3,
+            "support_indices": [
+              2
+            ],
+            "detail_before": 2.007864475250244,
+            "detail_after": 3.3742709159851074
+          }
+        ]
+      }
     },
     {
       "id": "03,08",
@@ -361,9 +1331,181 @@
     },
     {
       "id": "17,09",
-      "seconds": 147.108333,
-      "score": 0.5877240300178528,
-      "margin": 0.13688597083091736
+      "seconds": 148.675,
+      "score": 0.5949357151985168,
+      "margin": 0.12432479858398438,
+      "temporalMerge": {
+        "originalSeconds": 147.108333,
+        "baseSeconds": 148.675,
+        "changedPixelsFromDenseBase": 1511,
+        "frames": [
+          {
+            "seconds": 124.675
+          },
+          {
+            "seconds": 125.175
+          },
+          {
+            "seconds": 125.675
+          },
+          {
+            "seconds": 147.175
+          },
+          {
+            "seconds": 147.675
+          },
+          {
+            "seconds": 148.175
+          },
+          {
+            "seconds": 148.675
+          },
+          {
+            "seconds": 149.191667
+          },
+          {
+            "seconds": 149.691667
+          },
+          {
+            "seconds": 151.191667
+          },
+          {
+            "seconds": 151.691667
+          }
+        ],
+        "patches": [
+          {
+            "rectangle": [
+              80,
+              0,
+              96,
+              16
+            ],
+            "source_index": 9,
+            "support_indices": [
+              2
+            ],
+            "detail_before": 1.1855396032333374,
+            "detail_after": 4.172330856323242
+          },
+          {
+            "rectangle": [
+              96,
+              0,
+              112,
+              16
+            ],
+            "source_index": 8,
+            "support_indices": [
+              0,
+              1
+            ],
+            "detail_before": 2.1374237537384033,
+            "detail_after": 5.215760231018066
+          },
+          {
+            "rectangle": [
+              144,
+              0,
+              160,
+              16
+            ],
+            "source_index": 4,
+            "support_indices": [
+              3,
+              5
+            ],
+            "detail_before": 3.452059268951416,
+            "detail_after": 6.021903991699219
+          },
+          {
+            "rectangle": [
+              176,
+              0,
+              192,
+              16
+            ],
+            "source_index": 2,
+            "support_indices": [
+              1
+            ],
+            "detail_before": 2.0724570751190186,
+            "detail_after": 5.920434951782227
+          },
+          {
+            "rectangle": [
+              128,
+              16,
+              144,
+              32
+            ],
+            "source_index": 0,
+            "support_indices": [
+              1
+            ],
+            "detail_before": 2.9202845096588135,
+            "detail_after": 4.753489017486572
+          },
+          {
+            "rectangle": [
+              64,
+              32,
+              80,
+              48
+            ],
+            "source_index": 5,
+            "support_indices": [
+              2,
+              4,
+              8
+            ],
+            "detail_before": 0.7327228784561157,
+            "detail_after": 2.0507960319519043
+          },
+          {
+            "rectangle": [
+              256,
+              96,
+              272,
+              112
+            ],
+            "source_index": 9,
+            "support_indices": [
+              5
+            ],
+            "detail_before": 2.777132987976074,
+            "detail_after": 4.900689125061035
+          },
+          {
+            "rectangle": [
+              288,
+              96,
+              304,
+              112
+            ],
+            "source_index": 8,
+            "support_indices": [
+              7
+            ],
+            "detail_before": 4.466507434844971,
+            "detail_after": 8.402798652648926
+          },
+          {
+            "rectangle": [
+              16,
+              128,
+              32,
+              144
+            ],
+            "source_index": 1,
+            "support_indices": [
+              0
+            ],
+            "detail_before": 1.672922134399414,
+            "detail_after": 4.691316604614258
+          }
+        ]
+      }
     },
     {
       "id": "02,10",
@@ -481,9 +1623,47 @@
     },
     {
       "id": "03,13",
-      "seconds": 248.641667,
-      "score": 0.5013406276702881,
-      "margin": 0.058427125215530396
+      "seconds": 227.225,
+      "score": 0.5028740763664246,
+      "margin": 0.057472020387649536,
+      "temporalMerge": {
+        "originalSeconds": 248.641667,
+        "baseSeconds": 227.225,
+        "changedPixelsFromDenseBase": 234,
+        "frames": [
+          {
+            "seconds": 226.225
+          },
+          {
+            "seconds": 226.725
+          },
+          {
+            "seconds": 227.225
+          },
+          {
+            "seconds": 247.775
+          },
+          {
+            "seconds": 248.275
+          }
+        ],
+        "patches": [
+          {
+            "rectangle": [
+              64,
+              80,
+              80,
+              96
+            ],
+            "source_index": 4,
+            "support_indices": [
+              3
+            ],
+            "detail_before": 0.6422053575515747,
+            "detail_after": 7.607343673706055
+          }
+        ]
+      }
     },
     {
       "id": "08,13",
@@ -499,9 +1679,41 @@
     },
     {
       "id": "04,14",
-      "seconds": 254.608333,
-      "score": 0.6804549098014832,
-      "margin": 0.1376315951347351
+      "seconds": 254.775,
+      "score": 0.6783568263053894,
+      "margin": 0.13664871454238892,
+      "temporalMerge": {
+        "originalSeconds": 254.608333,
+        "baseSeconds": 254.775,
+        "changedPixelsFromDenseBase": 183,
+        "frames": [
+          {
+            "seconds": 253.775
+          },
+          {
+            "seconds": 254.275
+          },
+          {
+            "seconds": 254.775
+          }
+        ],
+        "patches": [
+          {
+            "rectangle": [
+              144,
+              16,
+              160,
+              32
+            ],
+            "source_index": 0,
+            "support_indices": [
+              1
+            ],
+            "detail_before": 3.040343761444092,
+            "detail_after": 4.230106353759766
+          }
+        ]
+      }
     },
     {
       "id": "09,14",
@@ -523,15 +1735,192 @@
     },
     {
       "id": "02,15",
-      "seconds": 276.508333,
-      "score": 0.6769909262657166,
-      "margin": 0.08214551210403442
+      "seconds": 274.291667,
+      "score": 0.6822017431259155,
+      "margin": 0.08615010976791382,
+      "temporalMerge": {
+        "originalSeconds": 276.508333,
+        "baseSeconds": 274.291667,
+        "changedPixelsFromDenseBase": 1724,
+        "frames": [
+          {
+            "seconds": 274.291667
+          },
+          {
+            "seconds": 274.791667
+          },
+          {
+            "seconds": 275.291667
+          },
+          {
+            "seconds": 276.308333
+          },
+          {
+            "seconds": 276.808333
+          },
+          {
+            "seconds": 277.308333
+          },
+          {
+            "seconds": 297.841667
+          },
+          {
+            "seconds": 298.341667
+          }
+        ],
+        "patches": [
+          {
+            "rectangle": [
+              32,
+              32,
+              48,
+              48
+            ],
+            "source_index": 7,
+            "support_indices": [
+              6
+            ],
+            "detail_before": 21.776596069335938,
+            "detail_after": 26.22526741027832
+          },
+          {
+            "rectangle": [
+              48,
+              32,
+              64,
+              48
+            ],
+            "source_index": 6,
+            "support_indices": [
+              7
+            ],
+            "detail_before": 7.966535568237305,
+            "detail_after": 10.665498733520508
+          },
+          {
+            "rectangle": [
+              80,
+              32,
+              96,
+              48
+            ],
+            "source_index": 6,
+            "support_indices": [
+              7
+            ],
+            "detail_before": 9.472146987915039,
+            "detail_after": 13.480852127075195
+          },
+          {
+            "rectangle": [
+              32,
+              48,
+              48,
+              64
+            ],
+            "source_index": 6,
+            "support_indices": [
+              7
+            ],
+            "detail_before": 6.164283275604248,
+            "detail_after": 9.104354858398438
+          },
+          {
+            "rectangle": [
+              48,
+              48,
+              64,
+              64
+            ],
+            "source_index": 6,
+            "support_indices": [
+              7
+            ],
+            "detail_before": 7.991473197937012,
+            "detail_after": 11.226221084594727
+          },
+          {
+            "rectangle": [
+              304,
+              112,
+              320,
+              128
+            ],
+            "source_index": 7,
+            "support_indices": [
+              6
+            ],
+            "detail_before": 9.162040710449219,
+            "detail_after": 11.295321464538574
+          },
+          {
+            "rectangle": [
+              80,
+              128,
+              96,
+              144
+            ],
+            "source_index": 5,
+            "support_indices": [
+              4
+            ],
+            "detail_before": 4.036482334136963,
+            "detail_after": 6.138399124145508
+          }
+        ]
+      }
     },
     {
       "id": "04,15",
-      "seconds": 279.458333,
-      "score": 0.6499612927436829,
-      "margin": 0.12424153089523315
+      "seconds": 278.808333,
+      "score": 0.6589659452438354,
+      "margin": 0.11798763275146484,
+      "temporalMerge": {
+        "originalSeconds": 279.458333,
+        "baseSeconds": 278.808333,
+        "changedPixelsFromDenseBase": 483,
+        "frames": [
+          {
+            "seconds": 278.808333
+          },
+          {
+            "seconds": 279.308333
+          },
+          {
+            "seconds": 279.808333
+          }
+        ],
+        "patches": [
+          {
+            "rectangle": [
+              64,
+              64,
+              80,
+              80
+            ],
+            "source_index": 2,
+            "support_indices": [
+              1
+            ],
+            "detail_before": 8.655312538146973,
+            "detail_after": 12.711481094360352
+          },
+          {
+            "rectangle": [
+              48,
+              80,
+              64,
+              96
+            ],
+            "source_index": 2,
+            "support_indices": [
+              1
+            ],
+            "detail_before": 5.79130220413208,
+            "detail_after": 7.540301322937012
+          }
+        ]
+      }
     },
     {
       "id": "06,15",
@@ -553,9 +1942,179 @@
     },
     {
       "id": "02,16",
-      "seconds": 299.275,
-      "score": 0.6351372003555298,
-      "margin": 0.10039418935775757
+      "seconds": 299.341667,
+      "score": 0.6375901103019714,
+      "margin": 0.1018940806388855,
+      "temporalMerge": {
+        "originalSeconds": 299.275,
+        "baseSeconds": 299.341667,
+        "changedPixelsFromDenseBase": 2006,
+        "frames": [
+          {
+            "seconds": 298.841667
+          },
+          {
+            "seconds": 299.341667
+          },
+          {
+            "seconds": 299.841667
+          },
+          {
+            "seconds": 320.391667
+          },
+          {
+            "seconds": 320.891667
+          },
+          {
+            "seconds": 322.408333
+          }
+        ],
+        "patches": [
+          {
+            "rectangle": [
+              272,
+              0,
+              288,
+              16
+            ],
+            "source_index": 4,
+            "support_indices": [
+              3
+            ],
+            "detail_before": 3.4725584983825684,
+            "detail_after": 6.279217720031738
+          },
+          {
+            "rectangle": [
+              272,
+              16,
+              288,
+              32
+            ],
+            "source_index": 3,
+            "support_indices": [
+              4
+            ],
+            "detail_before": 2.959052562713623,
+            "detail_after": 5.810892105102539
+          },
+          {
+            "rectangle": [
+              288,
+              16,
+              304,
+              32
+            ],
+            "source_index": 4,
+            "support_indices": [
+              3
+            ],
+            "detail_before": 2.938727378845215,
+            "detail_after": 6.228858947753906
+          },
+          {
+            "rectangle": [
+              304,
+              32,
+              320,
+              48
+            ],
+            "source_index": 5,
+            "support_indices": [
+              4
+            ],
+            "detail_before": 3.80877423286438,
+            "detail_after": 5.8094587326049805
+          },
+          {
+            "rectangle": [
+              288,
+              48,
+              304,
+              64
+            ],
+            "source_index": 3,
+            "support_indices": [
+              4,
+              5
+            ],
+            "detail_before": 1.5783929824829102,
+            "detail_after": 2.839186191558838
+          },
+          {
+            "rectangle": [
+              272,
+              64,
+              288,
+              80
+            ],
+            "source_index": 3,
+            "support_indices": [
+              4,
+              5
+            ],
+            "detail_before": 0.9913648366928101,
+            "detail_after": 1.9199259281158447
+          },
+          {
+            "rectangle": [
+              288,
+              80,
+              304,
+              96
+            ],
+            "source_index": 4,
+            "support_indices": [
+              3
+            ],
+            "detail_before": 0.9226987957954407,
+            "detail_after": 2.1583681106567383
+          },
+          {
+            "rectangle": [
+              240,
+              96,
+              256,
+              112
+            ],
+            "source_index": 4,
+            "support_indices": [
+              3,
+              5
+            ],
+            "detail_before": 2.289433240890503,
+            "detail_after": 4.306408882141113
+          },
+          {
+            "rectangle": [
+              256,
+              96,
+              272,
+              112
+            ],
+            "source_index": 4,
+            "support_indices": [
+              3
+            ],
+            "detail_before": 2.385725498199463,
+            "detail_after": 4.831894397735596
+          },
+          {
+            "rectangle": [
+              272,
+              96,
+              288,
+              112
+            ],
+            "source_index": 4,
+            "support_indices": [
+              3
+            ],
+            "detail_before": 2.402409791946411,
+            "detail_after": 5.109242916107178
+          }
+        ]
+      }
     },
     {
       "id": "04,16",
@@ -583,9 +2142,285 @@
     },
     {
       "id": "02,18",
-      "seconds": 366.956667,
-      "score": 0.743250846862793,
-      "margin": 0.13650834560394287
+      "seconds": 366.54,
+      "score": 0.7439628839492798,
+      "margin": 0.1348075270652771,
+      "temporalMerge": {
+        "originalSeconds": 366.956667,
+        "baseSeconds": 366.54,
+        "changedPixelsFromDenseBase": 3819,
+        "frames": [
+          {
+            "seconds": 344.99
+          },
+          {
+            "seconds": 345.49
+          },
+          {
+            "seconds": 345.99
+          },
+          {
+            "seconds": 366.04
+          },
+          {
+            "seconds": 366.54
+          },
+          {
+            "seconds": 367.04
+          }
+        ],
+        "patches": [
+          {
+            "rectangle": [
+              64,
+              0,
+              80,
+              16
+            ],
+            "source_index": 1,
+            "support_indices": [
+              0,
+              2
+            ],
+            "detail_before": 6.500208854675293,
+            "detail_after": 8.299600601196289
+          },
+          {
+            "rectangle": [
+              80,
+              0,
+              96,
+              16
+            ],
+            "source_index": 0,
+            "support_indices": [
+              1,
+              2
+            ],
+            "detail_before": 3.279536485671997,
+            "detail_after": 5.257476329803467
+          },
+          {
+            "rectangle": [
+              96,
+              0,
+              112,
+              16
+            ],
+            "source_index": 2,
+            "support_indices": [
+              0,
+              1
+            ],
+            "detail_before": 4.532632350921631,
+            "detail_after": 6.307436466217041
+          },
+          {
+            "rectangle": [
+              176,
+              32,
+              192,
+              48
+            ],
+            "source_index": 0,
+            "support_indices": [
+              1,
+              2
+            ],
+            "detail_before": 2.884446620941162,
+            "detail_after": 4.136288642883301
+          },
+          {
+            "rectangle": [
+              192,
+              32,
+              208,
+              48
+            ],
+            "source_index": 2,
+            "support_indices": [
+              1
+            ],
+            "detail_before": 1.8498769998550415,
+            "detail_after": 4.864848613739014
+          },
+          {
+            "rectangle": [
+              0,
+              48,
+              16,
+              64
+            ],
+            "source_index": 1,
+            "support_indices": [
+              0,
+              2
+            ],
+            "detail_before": 3.6204299926757812,
+            "detail_after": 5.752596855163574
+          },
+          {
+            "rectangle": [
+              0,
+              64,
+              16,
+              80
+            ],
+            "source_index": 0,
+            "support_indices": [
+              1,
+              2
+            ],
+            "detail_before": 10.464603424072266,
+            "detail_after": 13.185009956359863
+          },
+          {
+            "rectangle": [
+              304,
+              80,
+              320,
+              96
+            ],
+            "source_index": 2,
+            "support_indices": [
+              0,
+              1
+            ],
+            "detail_before": 6.453726768493652,
+            "detail_after": 9.67643928527832
+          },
+          {
+            "rectangle": [
+              208,
+              96,
+              224,
+              112
+            ],
+            "source_index": 1,
+            "support_indices": [
+              0,
+              2
+            ],
+            "detail_before": 5.155496120452881,
+            "detail_after": 7.086853504180908
+          },
+          {
+            "rectangle": [
+              224,
+              96,
+              240,
+              112
+            ],
+            "source_index": 0,
+            "support_indices": [
+              1,
+              2
+            ],
+            "detail_before": 3.9889583587646484,
+            "detail_after": 5.283156394958496
+          },
+          {
+            "rectangle": [
+              272,
+              96,
+              288,
+              112
+            ],
+            "source_index": 5,
+            "support_indices": [
+              2
+            ],
+            "detail_before": 11.902959823608398,
+            "detail_after": 19.446319580078125
+          },
+          {
+            "rectangle": [
+              224,
+              112,
+              240,
+              128
+            ],
+            "source_index": 0,
+            "support_indices": [
+              1
+            ],
+            "detail_before": 14.940825462341309,
+            "detail_after": 20.92403793334961
+          },
+          {
+            "rectangle": [
+              272,
+              112,
+              288,
+              128
+            ],
+            "source_index": 0,
+            "support_indices": [
+              3
+            ],
+            "detail_before": 10.673055648803711,
+            "detail_after": 15.454760551452637
+          },
+          {
+            "rectangle": [
+              288,
+              112,
+              304,
+              128
+            ],
+            "source_index": 0,
+            "support_indices": [
+              3
+            ],
+            "detail_before": 8.155037879943848,
+            "detail_after": 13.31960678100586
+          },
+          {
+            "rectangle": [
+              224,
+              128,
+              240,
+              144
+            ],
+            "source_index": 0,
+            "support_indices": [
+              1
+            ],
+            "detail_before": 2.7635321617126465,
+            "detail_after": 8.24163818359375
+          },
+          {
+            "rectangle": [
+              272,
+              128,
+              288,
+              144
+            ],
+            "source_index": 2,
+            "support_indices": [
+              0,
+              1
+            ],
+            "detail_before": 1.0870153903961182,
+            "detail_after": 3.817434310913086
+          },
+          {
+            "rectangle": [
+              304,
+              128,
+              320,
+              144
+            ],
+            "source_index": 2,
+            "support_indices": [
+              0,
+              1
+            ],
+            "detail_before": 4.513851165771484,
+            "detail_after": 5.990661144256592
+          }
+        ]
+      }
     },
     {
       "id": "07,18",
@@ -607,9 +2442,81 @@
     },
     {
       "id": "03,19",
-      "seconds": 390.79,
-      "score": 0.5436094403266907,
-      "margin": 0.17098766565322876
+      "seconds": 392.123333,
+      "score": 0.6397544145584106,
+      "margin": 0.2358928620815277,
+      "temporalMerge": {
+        "originalSeconds": 390.79,
+        "baseSeconds": 392.123333,
+        "changedPixelsFromDenseBase": 372,
+        "frames": [
+          {
+            "seconds": 368.54
+          },
+          {
+            "seconds": 369.04
+          },
+          {
+            "seconds": 369.54
+          },
+          {
+            "seconds": 390.623333
+          },
+          {
+            "seconds": 391.123333
+          },
+          {
+            "seconds": 391.623333
+          },
+          {
+            "seconds": 392.123333
+          }
+        ],
+        "patches": [
+          {
+            "rectangle": [
+              80,
+              80,
+              96,
+              96
+            ],
+            "source_index": 5,
+            "support_indices": [
+              4
+            ],
+            "detail_before": 0.1600041687488556,
+            "detail_after": 4.586808204650879
+          },
+          {
+            "rectangle": [
+              112,
+              80,
+              128,
+              96
+            ],
+            "source_index": 4,
+            "support_indices": [
+              5
+            ],
+            "detail_before": 0.08328666538000107,
+            "detail_after": 2.3077316284179688
+          },
+          {
+            "rectangle": [
+              96,
+              96,
+              112,
+              112
+            ],
+            "source_index": 5,
+            "support_indices": [
+              4
+            ],
+            "detail_before": 4.3278679847717285,
+            "detail_after": 7.539292335510254
+          }
+        ]
+      }
     },
     {
       "id": "11,19",

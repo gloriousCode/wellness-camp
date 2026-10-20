@@ -24,7 +24,8 @@ export function useAtlasContent(map: MapEntry, imagery: ImageryMode = 'normal') 
       context.drawImage(image, 0, 0, canvas.width, canvas.height);
       const pixels = context.getImageData(0, 0, canvas.width, canvas.height).data;
       setContent({ image, bounds: imageBounds(image), screens: detectScreens(pixels, canvas.width, canvas.height, image.naturalWidth, image.naturalHeight),
-        gameplayScreens: gameplay ? new Set(GAMEPLAY_ATLAS.roomIds) : undefined });
+        gameplayScreens: gameplay ? new Set(GAMEPLAY_ATLAS.roomIds) : undefined,
+        mergedScreens: gameplay ? new Set(GAMEPLAY_ATLAS.mergedRoomIds) : undefined });
       setStatus('');
     };
     image.onerror = () => { if (!cancelled) setStatus('Could not load this atlas. Choose another version or reload.'); };
