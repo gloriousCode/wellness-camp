@@ -24,7 +24,7 @@ class CaptureMergeTests(unittest.TestCase):
         ]}
         merged = [{'column': 1, 'row': 2, 'file': 'merged.png', 'changes': [{'rectangle': [0, 0, 16, 16]}],
                    'base_frame': 'dense.png', 'frames': [{'file': 'dense.png', 'seconds': 4}], 'base_index': 0, 'changed_pixels': 8},
-                  {'column': 99, 'row': 99, 'file': 'extra.png', 'changes': [{}]}]
+                  {'column': 99, 'row': 99, 'file': 'extra.png', 'changes': [{}], 'changed_pixels': 10}]
         matching = {'matches': [{'frame': 'dense.png', 'margin': .3, 'candidates': [{'score': .9}]}]}
         pixels = np.random.default_rng(1).integers(0, 255, (352, 640, 3), dtype=np.uint8)
         original = Image.fromarray(pixels)
@@ -47,6 +47,28 @@ class CaptureMergeTests(unittest.TestCase):
         expected = np.asarray(original.resize((320, 176), Image.Resampling.BOX))
         np.testing.assert_array_equal(saved['room-02-02.png'], expected)
         self.assertEqual(len(saved), 2)
+        with self.subTest('small composites preserve the existing source and metadata'):
+            opened = []
+
+            def open_image(path):
+                opened.append(Path(path))
+                return original.copy()
+
+            with patch.object(Path, 'read_text', return_value=json.dumps(existing)), \
+                    patch.object(Path, 'mkdir'), patch.object(Path, 'write_text'), \
+                    patch.object(Image, 'open', side_effect=open_image), \
+                    patch.object(Image.Image, 'save', new=save):
+                filtered = merging.write_existing_layer(Path('original/rooms.json'), merged, matching,
+                                                         Path('merged'), minimum_changed_pixels=9)
+            self.assertEqual(opened, [Path('original/first.png'), Path('original/second.png')])
+            self.assertEqual(filtered['rooms'][0]['seconds'], 1)
+            self.assertNotIn('temporalMerge', filtered['rooms'][0])
+            np.testing.assert_array_equal(saved['room-01-02.png'], expected)
+        with self.subTest('invalid threshold'):
+            with patch.object(Path, 'read_text', return_value=json.dumps(existing)):
+                with self.assertRaises(ValueError):
+                    merging.write_existing_layer(Path('original/rooms.json'), merged, matching,
+                                                 Path('merged'), minimum_changed_pixels=0)
 
     def test_merge_patches(self):
         random = np.random.default_rng(128)

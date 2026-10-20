@@ -71,7 +71,7 @@ def merge_patches(frames: np.ndarray, base_index: int = 0, times: list[float] | 
 
 
 def write_existing_layer(existing_path: Path, merged_rooms: list[dict], matching: dict,
-                         output: Path) -> dict:
+                         output: Path, minimum_changed_pixels: int = 1) -> dict:
     """Write build-ready imagery for exactly the original layer's room coverage.
 
     Rooms with no accepted composite retain their original pixels after the same
@@ -79,7 +79,10 @@ def write_existing_layer(existing_path: Path, merged_rooms: list[dict], matching
     coverage implicitly. Composite metadata retains original and new timestamps.
     """
     original = json.loads(existing_path.read_text())
-    composites = {(room['column'], room['row']): room for room in merged_rooms if room['changes']}
+    if minimum_changed_pixels < 1:
+        raise ValueError('Minimum changed pixels must be positive')
+    composites = {(room['column'], room['row']): room for room in merged_rooms
+                  if room['changes'] and room['changed_pixels'] >= minimum_changed_pixels}
     matches = {match['frame']: match for match in matching['matches']}
     layer = output / 'layer'
     layer.mkdir()
@@ -120,7 +123,11 @@ def main() -> None:
     parser.add_argument('--output', type=Path, required=True)
     parser.add_argument('--existing-rooms', type=Path,
                         help='Also write layer/rooms.json preserving this existing layer coverage and untouched images')
+    parser.add_argument('--minimum-changed-pixels', type=int, default=1,
+                        help='Minimum changed pixels before replacing an existing room with its composite')
     args = parser.parse_args()
+    if args.minimum_changed_pixels < 1:
+        parser.error('--minimum-changed-pixels must be positive')
     if args.output.exists():
         parser.error('Output already exists; use a new directory to preserve originals')
     matching = json.loads(args.matches.read_text())
@@ -163,7 +170,8 @@ def main() -> None:
               'changed_rooms': sum(bool(room['changes']) for room in rooms), 'rooms': rooms}
     (args.output / 'merges.json').write_text(json.dumps(report, indent=2) + '\n')
     if args.existing_rooms:
-        write_existing_layer(args.existing_rooms, rooms, matching, args.output)
+        write_existing_layer(args.existing_rooms, rooms, matching, args.output,
+                             args.minimum_changed_pixels)
     changed = sorted((room for room in rooms if room['changes']), key=lambda room: room['changed_pixels'], reverse=True)[:12]
     if changed:
         preview = Image.new('RGB', (640, len(changed) * 196), '#10101a')

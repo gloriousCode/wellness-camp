@@ -23,7 +23,12 @@ export function useAtlasContent(map: MapEntry, imagery: ImageryMode = 'normal') 
       context.imageSmoothingEnabled = false;
       context.drawImage(image, 0, 0, canvas.width, canvas.height);
       const pixels = context.getImageData(0, 0, canvas.width, canvas.height).data;
-      setContent({ image, bounds: imageBounds(image), screens: detectScreens(pixels, canvas.width, canvas.height, image.naturalWidth, image.naturalHeight),
+      const detected = detectScreens(pixels, canvas.width, canvas.height, image.naturalWidth, image.naturalHeight);
+      const [left, top, right, bottom] = GAMEPLAY_ATLAS.cellBounds ?? [0, 0, Infinity, Infinity];
+      const screens = map.id === GAMEPLAY_ATLAS.mapId
+        ? detected.filter(screen => screen.column >= left && screen.column <= right && screen.row >= top && screen.row <= bottom)
+        : detected;
+      setContent({ image, bounds: imageBounds(image), screens,
         gameplayScreens: gameplay ? new Set(GAMEPLAY_ATLAS.roomIds) : undefined,
         mergedScreens: gameplay ? new Set(GAMEPLAY_ATLAS.mergedRoomIds) : undefined });
       setStatus('');

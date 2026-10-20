@@ -25,7 +25,7 @@ The interface follows Berry Camp's map-first approach: a searchable screen list,
 - Right-click a screen for focus/save actions. The selected-screen panel provides the same actions for touch and keyboard use.
 - **Fit world** frames visible content; **1:1** displays one source pixel per CSS pixel.
 - Click the minimap to relocate. Settings toggle screen boundaries and the minimap.
-- Use **Normal / In game** above the map to switch imagery while keeping your position, zoom and selected screen. The gameplay version currently contains 88 candidate room matches from the 20 October recording; other rooms use the normal image. The selected-screen preview identifies captures and fallback imagery. Historical layouts support Normal only.
+- Use **Normal / In game** above the map to switch imagery while keeping your position, zoom and selected screen. The gameplay version uses reviewed room matches from the 20 October recording; its current capture count appears beside the toggle. Unmatched rooms use the normal image. The selected-screen preview identifies captures and fallback imagery. Historical layouts support Normal only.
 - Focus the main canvas for arrow-key panning, `+` / `-` zoom, `0` to fit, and Escape to clear selection.
 - Use the header menu button to show or hide the screen browser. Drag its divider to resize it on desktop; focus the divider and use arrow keys for keyboard resizing. Historical atlases are selected with the date dropdown.
 - **Save screen** exports the untouched 320 × 176 atlas slice. **Save visible map** exports visible source imagery at native resolution, without UI or highlight overlays.
@@ -67,7 +67,7 @@ The crop is specific to the first 2784 × 1720 recording: X, Y, width, height. R
 
 `matches.json` retains the three highest-ranked candidates per sample, heuristic acceptance thresholds, uncertain samples and the strongest accepted sample per atlas cell. Contact sheets place the captured room beside its atlas candidate for review. Scores are not probabilities, accepted candidates still need inspection, and unmatched samples do not establish that rooms are missing from the atlas. Matching ignores bottom-corner HUD regions and the cursor position from this first recording; it does not remove anything from the exported images. Player, HUD, cursor and animated effects remain intact. No gameplay captures are automatically added to the public map.
 
-The initial 88 candidates have been explicitly included as the optional gameplay version. Its self-contained lossless WebP is approximately 6.81 MB and uses the same 8,320 × 4,576 coordinate system as the normal atlas. Uncaptured cells are pixel-identical to the decoded normal source. `public/gameplay/20261020.json` records room timestamps, matching scores, source crop and the output checksum; the full recording and high-resolution working images remain private in `.local/`. Effects are captured in still frames, not animated. Player, cursor and HUD remain visible, and not every candidate placement has been manually verified.
+The reviewed captures are included as the optional gameplay version. Its self-contained lossless WebP uses the same 8,320 × 4,576 coordinate system as the normal atlas. Uncaptured cells are pixel-identical to the decoded normal source. `public/gameplay/20261020.json` records room timestamps, matching scores, source crop and the output checksum; the full recording and high-resolution working images remain private in `.local/`. Effects are captured in still frames, not animated. Player, cursor and HUD remain visible, and not every candidate placement has been manually verified.
 
 After extracting full-resolution candidates into a `rooms/rooms.json` manifest, rebuild the public gameplay layer and its generated viewer descriptor with:
 
@@ -77,7 +77,7 @@ python3 scripts/build_gameplay_atlas.py .local/capture-analysis/rooms/rooms.json
 
 ### Combine clouded and revealed areas
 
-Sixteen of the existing 88 captured cells now combine repeatedly revealed areas from multiple frames. The selected-screen preview labels these **Combined in-game captures**. Other captured cells retain their original images. This can improve visibility where lighting or cloud cover changes during traversal; unseen areas stay dark, and lighting seams or persistent objects can remain.
+Captured cells with substantial, repeatedly supported gains combine revealed areas from multiple frames. The selected-screen preview labels these **Combined in-game captures**. Other captured cells retain their original images. This can improve visibility where lighting or cloud cover changes during traversal; unseen areas stay dark, and lighting seams or persistent objects can remain.
 
 `scripts/merge_capture.py` considers only accepted room matches with structural agreement, and copies a clearer 16 × 16 patch only when another temporally separate frame supports it. It copies sampled RGB pixels exactly, rather than taking each pixel's maximum brightness or generating missing detail. The bottom HUD strip and fixed cursor area remain from the base frame. Source-index maps and timestamped patch provenance make each change traceable. Synthetic tests cover complementary reveals, transient bright outliers and insufficient samples.
 
@@ -99,7 +99,7 @@ python3 scripts/build_gameplay_atlas.py .local/capture-analysis/merge-study/laye
 python3 -m unittest discover -s tests -p 'test_capture_*.py'
 ```
 
-The denser pass also finds additional candidate cells, which remain private and have not been added to the viewer. The existing-room filter keeps the public layer's coverage unchanged. Building from the original `rooms/rooms.json` instead restores the original single-frame gameplay version.
+The existing-room filter keeps coverage fixed for a merge-only pass. The expanded workflow below explicitly reviews and adds new placements. Building from the original `rooms/rooms.json` instead restores the initial single-frame gameplay version.
 
 ## Image provenance and limitations
 
@@ -114,3 +114,45 @@ python3 scripts/import_maps.py
 The repository's existing licence applies to this project's code; it does not grant rights to Animal Well imagery or third-party material. No image reuse licence was present in the inspected atlas source tree. Public redistribution permission for the atlas collection remains unverified. Attribution is included in the viewer and source manifest; it is not a substitute for permission.
 
 Animal Well © Billy Basso / Shared Memory, published by BIGMODE. This is an independent educational project with no affiliation.
+
+### Expand coverage across matching passes
+
+The additional pass samples the complete recording at a minimum 0.125-second interval (3,027 actual samples). Global matching is followed by a stricter partial-room check: three distinctive spatial regions must agree without conflicting region votes, and independent frames must corroborate the placement. Remaining candidates require visual geometry review. Brightened review copies help inspect dark frames; they are never used as published imagery.
+
+`collate_captures.py` combines accepted samples from several passes, preserves source timestamps and rejects conflicting assignments for the same frame. The default cell bounds restrict this atlas to the main 16 × 16 grid, excluding peripheral export artefacts. `coverage` in the public metadata lists unresolved cells; an unresolved cell does not establish that the recording omitted a visit. Alternate game layers and completeness beyond this source atlas remain unverified.
+
+The retained workflow is:
+
+```sh
+python3 scripts/sample_capture.py \
+  '.local/recordings/Screen Recording 2026-10-20 at 13.48.06.mov' \
+  .local/capture-analysis/pass3 --crop 112 132 2560 1408 \
+  --all-frames --interval 0.125
+python3 scripts/match_capture.py --frames .local/capture-analysis/pass3 \
+  --output .local/capture-analysis/pass3-matching
+python3 scripts/refine_capture.py \
+  --matches .local/capture-analysis/pass3-matching/matches.json \
+  --output .local/capture-analysis/pass3-refined
+```
+
+After reviewing the additional placements, collate the keyframe, dense, refined and manually confirmed reports with their matching capture manifests. Use a new output directory:
+
+```sh
+python3 scripts/collate_captures.py \
+  --matches .local/capture-analysis/timed-matching/matches.json \
+    .local/capture-analysis/dense-matching/matches.json \
+    .local/capture-analysis/pass3-refined/matches.json \
+    .local/capture-analysis/coverage-audit/manual-recoveries.json \
+    .local/capture-analysis/final-targeted/extra-matches.json \
+  --captures .local/capture-analysis/timed/capture.json \
+    .local/capture-analysis/dense/capture.json .local/capture-analysis/pass3/capture.json \
+  --output .local/capture-analysis/final-union
+python3 scripts/merge_capture.py \
+  --matches .local/capture-analysis/final-union/matches.json \
+  --capture .local/capture-analysis/final-union/capture.json \
+  --existing-rooms .local/capture-analysis/final-union/source-rooms/rooms.json \
+  --minimum-changed-pixels 500 --output .local/capture-analysis/final-merges
+python3 scripts/build_gameplay_atlas.py .local/capture-analysis/final-merges/layer/rooms.json
+```
+
+The 500-pixel minimum avoids publishing tiny changes dominated by animation. It is a heuristic, not a guarantee against lighting seams. All input recordings, sampled frames and audit sheets remain private in `.local/`; only the assembled gameplay atlas and its sanitised provenance are included in the repository.
