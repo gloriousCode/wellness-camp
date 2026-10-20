@@ -20,7 +20,13 @@ npm run build
 npm run preview
 ```
 
-`dist/` includes all viewer imagery. The relative Vite base supports GitHub Pages repository paths; publish this directory using a static Pages deployment process. Fonts use Google Fonts with system fallbacks.
+`dist/` includes all viewer imagery. The relative Vite base supports GitHub Pages repository paths. Fonts use Google Fonts with system fallbacks.
+
+## GitHub Pages
+
+The workflow in `.github/workflows/pages.yml` checks types, runs the viewer tests, builds with Node.js 24 and deploys only `dist/`. It runs on pushes to `main` and can also be started manually from Actions. The recording, local backups, dependencies and Git history are excluded from the published site.
+
+In the repository’s **Settings → Pages → Build and deployment**, select **GitHub Actions** as the source. After the workflow reaches `main`, its successful deployment will publish [Wellness Camp](https://gloriouscode.github.io/wellness-camp/). The Actions deployment job also reports the final URL. Future pushes to `main` update the site automatically. No custom domain or API keys are required.
 
 ## Explore
 
