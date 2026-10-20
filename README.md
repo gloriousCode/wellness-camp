@@ -20,7 +20,7 @@ Open the local URL printed by Vite. No game, MAXWELL, account or API key is need
 The interface follows Berry Camp's map-first approach: a searchable screen list, direct room focus, a screen preview, image export and automatically updated view bounds in the address bar. It uses an independent implementation and Animal Well imagery.
 
 - Drag to pan; scroll or pinch to zoom around the pointer.
-- Click a screen to select it. Double-click, or choose it in the sidebar, to focus it. Shift + double-click zooms out.
+- Click a screen to select and focus it, or choose it in the sidebar. Shift + double-click zooms out.
 - Search coordinates in column,row order, such as `08,12`. Bare numbers match either coordinate.
 - Right-click a screen for focus/save actions. The selected-screen panel provides the same actions for touch and keyboard use.
 - **Fit world** frames visible content; **1:1** displays one source pixel per CSS pixel.

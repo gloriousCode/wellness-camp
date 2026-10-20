@@ -127,7 +127,7 @@ export const Atlas = forwardRef<AtlasHandle, Props>(function Atlas({ content, st
     return { x: (clientX - rect.left - c.x) / c.scale, y: (clientY - rect.top - c.y) / c.scale };
   };
   return <div className="atlas-wrap" ref={wrapRef}>
-    <canvas className="atlas" ref={canvasRef} tabIndex={0} aria-label="Interactive Animal Well atlas. Drag to pan, scroll or pinch to zoom. Click to select a screen, double-click to focus it. Arrow keys pan, plus and minus zoom, zero fits the world."
+    <canvas className="atlas" ref={canvasRef} tabIndex={0} aria-label="Interactive Animal Well atlas. Drag to pan, scroll or pinch to zoom. Click a screen to select and focus it. Arrow keys pan, plus and minus zoom, zero fits the world."
       onPointerDown={event => {
         if (event.button !== 0) return;
         setMenu(undefined); event.currentTarget.focus({ preventScroll: true }); event.currentTarget.setPointerCapture(event.pointerId);
@@ -149,7 +149,11 @@ export const Atlas = forwardRef<AtlasHandle, Props>(function Atlas({ content, st
         } else setCamera(current => ({ ...current, x: current.x + event.clientX - previous.x, y: current.y + event.clientY - previous.y }));
       }}
       onPointerUp={event => {
-        if (content && pointers.current.has(event.pointerId) && clickStart.current && !clickStart.current.moved) { const p = point(event.clientX, event.clientY); onSelect(screenAt(content.screens, p.x, p.y)); }
+        if (content && pointers.current.has(event.pointerId) && clickStart.current && !clickStart.current.moved) {
+          const p = point(event.clientX, event.clientY), screen = screenAt(content.screens, p.x, p.y);
+          onSelect(screen);
+          if (screen && !event.shiftKey) focus(screen);
+        }
         pointers.current.delete(event.pointerId); clickStart.current = null;
       }}
       onPointerCancel={event => { pointers.current.delete(event.pointerId); clickStart.current = null; }} onLostPointerCapture={event => pointers.current.delete(event.pointerId)} onPointerLeave={() => setHover(undefined)}
