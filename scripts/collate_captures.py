@@ -69,6 +69,7 @@ def main():
             image.convert('RGB').save(source / file)
         inventory.append({**room, 'seconds': times[room['best_frame']], 'image': file,
                           'review_status': 'Reviewed candidate placement; recorded pixels, possible occlusion',
+                          'inferredLocation': bool(matches[room['best_frame']].get('inferred_location')),
                           'reviewEvidence': matches[room['best_frame']].get('acceptance_reason',
                               'Global structural matching with candidate score and margin; placement reviewed')})
     capture = {**captures[0], 'sampling': 'Union of recorded samples from multiple passes',

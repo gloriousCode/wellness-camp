@@ -30,7 +30,9 @@ export function useAtlasContent(map: MapEntry, imagery: ImageryMode = 'normal') 
         : detected;
       setContent({ image, bounds: imageBounds(image), screens,
         gameplayScreens: gameplay ? new Set(GAMEPLAY_ATLAS.roomIds) : undefined,
-        mergedScreens: gameplay ? new Set(GAMEPLAY_ATLAS.mergedRoomIds) : undefined });
+        mergedScreens: gameplay ? new Set(GAMEPLAY_ATLAS.mergedRoomIds) : undefined,
+        inferredScreens: gameplay ? new Set(GAMEPLAY_ATLAS.inferredRoomIds) : undefined,
+        repairedScreens: gameplay ? new Set(GAMEPLAY_ATLAS.repairedRoomIds) : undefined });
       setStatus('');
     };
     image.onerror = () => { if (!cancelled) setStatus('Could not load this atlas. Choose another version or reload.'); };

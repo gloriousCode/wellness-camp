@@ -156,3 +156,26 @@ python3 scripts/build_gameplay_atlas.py .local/capture-analysis/final-merges/lay
 ```
 
 The 500-pixel minimum avoids publishing tiny changes dominated by animation. It is a heuristic, not a guarantee against lighting seams. All input recordings, sampled frames and audit sheets remain private in `.local/`; only the assembled gameplay atlas and its sanitised provenance are included in the repository.
+
+### Temporal placement and local repairs
+
+The gameplay layer now places footage in all 256 main-map cells. Twenty-six previously unresolved cells were corroborated using visible shape plus the surrounding traversal sequence. Locations `11,13` and `11,17` are explicitly inferred from unique one-cell gaps between identified neighbours; their backgrounds remain heavily obscured. The preview labels inferred locations. This establishes placement coverage for this main atlas, rather than complete visible geometry or coverage of alternate layers.
+
+`scripts/temporal_capture.py` identifies candidate intervals between known rooms. Contrast/gamma-adjusted copies are used only for review; original lighting is retained in published captures. Reviewed temporal matches and the separate inferred completion are collated with the earlier reports before rebuilding the layer.
+
+All 256 cursor footprints have approximate local repairs. The measured cursor mask is only 23 pixels at native room resolution; four weakened detections were visually confirmed and repaired with `--assume-fixed`. Player cleanup repaired 54 rooms: 26 use corroborated backgrounds from other frames of the same room, and 28 use marked nearby-pixel approximations. Undetected player poses may remain. HUD and other animations remain outside the small repair masks.
+
+```sh
+python3 scripts/repair_player.py \
+  --rooms .local/capture-analysis/temporal-merges/layer/rooms.json \
+  --matches .local/capture-analysis/temporal-union/matches.json \
+  --template-frame .local/capture-analysis/pass3/frame-0113.png \
+  --extra-template .local/native15.png 71 86 81 96 \
+  --output .local/capture-analysis/complete-player-cleaned
+python3 scripts/repair_cursor.py \
+  --rooms .local/capture-analysis/complete-player-cleaned/rooms.json \
+  --assume-fixed --output .local/capture-analysis/complete-cleaned-fixed
+python3 scripts/build_gameplay_atlas.py .local/capture-analysis/complete-cleaned-fixed/rooms.json
+```
+
+Repairs are derivatives: original videos, samples and room exports remain intact. Cleaned copies of all 88 original full-resolution room exports are in `.local/capture-analysis/saved-room-exports-cleaned/`; the six original examples have cleaned siblings in `.local/capture-analysis/examples-cleaned/`. Exact changed-pixel masks and private provenance accompany the derivatives. The public metadata retains sanitised repair methods, rectangles and approximation flags, and the preview identifies locally repaired imagery. Approximate repairs may have tiny colour seams and must not be treated as recovered evidence of hidden level geometry.
