@@ -2,6 +2,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import type { CSSProperties } from 'react';
 import { useAtlasContent } from '../hooks';
 import { GAMEPLAY_ATLAS } from '../gameplay';
+import { MAP_LAYER } from '../mapLayer';
 import { cameraView, readView, viewUrl } from '../viewUrl';
 import type { AtlasHandle, Camera, ImageryMode, Manifest, Screen, Size } from '../types';
 import { Atlas } from './Atlas';
@@ -14,8 +15,12 @@ export function MapExplorer({ manifest }: Props) {
   const [mapId, setMapId] = useState(() => { const id = new URLSearchParams(location.search).get('map') || new URLSearchParams(location.hash.slice(1)).get('map') || DEFAULT_MAP; return manifest.maps.some(map => map.id === id) ? id : DEFAULT_MAP; });
   const map = manifest.maps.find(entry => entry.id === mapId)!;
   const gameplayAvailable = mapId === GAMEPLAY_ATLAS.mapId;
-  const [imagery, setImagery] = useState<ImageryMode>(() => gameplayAvailable && new URLSearchParams(location.search).get('imagery') === 'gameplay' ? 'gameplay' : 'normal');
-  const mode = gameplayAvailable ? imagery : 'normal';
+  const mapAvailable = mapId === MAP_LAYER.mapId;
+  const [imagery, setImagery] = useState<ImageryMode>(() => {
+    const requested = new URLSearchParams(location.search).get('imagery');
+    return requested === 'gameplay' && gameplayAvailable ? 'gameplay' : requested === 'map' && mapAvailable ? 'map' : 'normal';
+  });
+  const mode = imagery === 'gameplay' && !gameplayAvailable || imagery === 'map' && !mapAvailable ? 'normal' : imagery;
   const { content, status } = useAtlasContent(map, mode);
   const [selected, setSelected] = useState<Screen>();
   const [grid, setGrid] = useState(false);
@@ -43,7 +48,8 @@ export function MapExplorer({ manifest }: Props) {
       const url = new URL(location.href), id = url.searchParams.get('map') || DEFAULT_MAP;
       if (!manifest.maps.some(entry => entry.id === id)) return;
       setMapId(id);
-      setImagery(id === GAMEPLAY_ATLAS.mapId && url.searchParams.get('imagery') === 'gameplay' ? 'gameplay' : 'normal');
+      const requested = url.searchParams.get('imagery');
+      setImagery(requested === 'gameplay' && id === GAMEPLAY_ATLAS.mapId ? 'gameplay' : requested === 'map' && id === MAP_LAYER.mapId ? 'map' : 'normal');
       const room = content?.screens.find(entry => entry.id === url.searchParams.get('room'));
       setSelected(room);
       const bounds = readView(url.searchParams);
@@ -53,7 +59,7 @@ export function MapExplorer({ manifest }: Props) {
     window.addEventListener('popstate', navigate);
     return () => window.removeEventListener('popstate', navigate);
   }, [manifest, content]);
-  const changeMap = (id: string) => { setMapId(id); setSelected(undefined); if (id !== GAMEPLAY_ATLAS.mapId) setImagery('normal'); };
+  const changeMap = (id: string) => { setMapId(id); setSelected(undefined); if (imagery === 'gameplay' && id !== GAMEPLAY_ATLAS.mapId || imagery === 'map' && id !== MAP_LAYER.mapId) setImagery('normal'); };
   const selectScreen = (screen: Screen) => { setSelected(screen); atlas.current?.focus(screen); if (window.innerWidth <= 700) setSidebarOpen(false); };
   const world = () => { setSelected(undefined); atlas.current?.fit(); };
   const copyView = async () => {
@@ -73,13 +79,13 @@ export function MapExplorer({ manifest }: Props) {
     </header>
     {sidebarOpen && <Sidebar width={sidebarWidth} onWidth={setSidebarWidth} manifest={manifest} map={map} content={content} selected={selected} onMap={changeMap} onScreen={selectScreen} onWorld={world} onClear={() => setSelected(undefined)} onSave={screen => atlas.current?.save(screen)} />}
     <main className="map-workspace">
-      <section className="main-map" aria-label={mode === 'gameplay' ? 'In-game capture atlas' : 'Normal layout atlas'}><div className="map-title"><strong>Animal Well</strong><span>{selected ? `Screen ${selected.id}` : 'Whole world'} · {map.date}</span><ImageryToggle mode={mode} onChange={setImagery} available={gameplayAvailable} count={GAMEPLAY_ATLAS.roomIds.length} totalCount={content?.screens.length} inferredCount={GAMEPLAY_ATLAS.inferredRoomIds.length} /></div>
+      <section className="main-map" aria-label={mode === 'gameplay' ? 'Game view atlas' : mode === 'map' ? 'In-game map overlay atlas' : 'Raw layout atlas'}><div className="map-title"><strong>Animal Well</strong><span>{selected ? `Screen ${selected.id}` : 'Whole world'} · {map.date}</span><ImageryToggle mode={mode} onChange={setImagery} available={gameplayAvailable} mapAvailable={mapAvailable} count={GAMEPLAY_ATLAS.roomIds.length} totalCount={content?.screens.length} inferredCount={GAMEPLAY_ATLAS.inferredRoomIds.length} /></div>
         <div className="map-surface"><Atlas ref={atlas} content={content} status={status} mapId={mapId} grid={grid} minimap={minimap} selected={selected} onSelect={onSelect} onCamera={onCamera} onPixel={onPixel} onError={notify} />
           <div className="zoom-controls" aria-label="Map controls"><button aria-label="Zoom in" onClick={() => atlas.current?.zoom(1.5)}>＋</button><output aria-label="Zoom level">{Math.round(view.camera.scale * 100)}%</output><button aria-label="Zoom out" onClick={() => atlas.current?.zoom(1 / 1.5)}>−</button><span className="control-line" /><button className="fit-button" onClick={world}>Fit world</button><button className="native-button" onClick={() => atlas.current?.native()}>1:1</button><button aria-label="Toggle fullscreen" onClick={fullscreen}>⛶</button></div>
         </div><footer className="map-status"><span>Drag · scroll to zoom · click a screen to focus</span><output aria-label="Image coordinates">X {pixel.x.toLocaleString()} &nbsp; Y {pixel.y.toLocaleString()}</output></footer>
       </section>
     </main>
-    {settings && <section className="settings-popover" aria-label="Viewer settings"><div><strong>Viewer settings</strong><button aria-label="Close viewer settings" onClick={() => setSettings(false)}>×</button></div><label><input type="checkbox" checked={grid} onChange={event => setGrid(event.target.checked)} /> Show screen boundaries</label><label><input type="checkbox" checked={minimap} onChange={event => setMinimap(event.target.checked)} /> Show minimap</label><p>Screen cells are sliced from the original atlas. Coordinates increase rightwards and downwards. Source colours and orientation are unchanged.</p></section>}
+    {settings && <section className="settings-popover" aria-label="Viewer settings"><div><strong>Viewer settings</strong><button aria-label="Close viewer settings" onClick={() => setSettings(false)}>×</button></div><label><input type="checkbox" checked={grid} onChange={event => setGrid(event.target.checked)} /> Show screen boundaries</label><label><input type="checkbox" checked={minimap} onChange={event => setMinimap(event.target.checked)} /> Show minimap</label><p>Screen cells are sliced from the original atlas. Coordinates increase rightwards and downwards. Raw view preserves the source layout. Game view shows captured rooms, and Map view adds the aligned in-game map overlay.</p></section>}
     {notice && <div className="toast" role="status">{notice}</div>}
   </div>;
 }

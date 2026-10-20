@@ -1,0 +1,25 @@
+{
+  "source": "https://github.com/Silverfeelin/AnimalWell-Helper/blob/81432337b6a95ddbb951e6efcf5d256c2f82e517/src/assets/game/map.png",
+  "sourceSha256": "ec3353580d0aaa06fa5dd852fd1148f8ac99dba7c2bf39c76a743f117185401f",
+  "copyright": "ANIMAL WELL \u00a9 2024 Shared Memory LLC. Game assets are excluded from the upstream MIT licence.",
+  "sourceSize": [
+    640,
+    352
+  ],
+  "atlasSize": [
+    8320,
+    4576
+  ],
+  "transform": {
+    "scale": 8,
+    "x": 640,
+    "y": 704,
+    "resampling": "nearest"
+  },
+  "composition": {
+    "gameplayBrightness": 0.22,
+    "mapAlpha": 245,
+    "paperThreshold": 24
+  },
+  "note": "Source includes ordinary in-game map detail, not every cheat-only or hidden area. No vector tracing or invented detail."
+}

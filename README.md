@@ -25,11 +25,11 @@ The interface follows Berry Camp's map-first approach: a searchable screen list,
 - Right-click a screen for focus/save actions. The selected-screen panel provides the same actions for touch and keyboard use.
 - **Fit world** frames visible content; **1:1** displays one source pixel per CSS pixel.
 - Click the minimap to relocate. Settings toggle screen boundaries and the minimap.
-- Use **Normal / In game** above the map to switch imagery while keeping your position, zoom and selected screen. The gameplay version uses reviewed room matches from the 20 October recording; its current capture count appears beside the toggle. Unmatched rooms use the normal image. The selected-screen preview identifies captures and fallback imagery. Historical layouts support Normal only.
+- Use **Game view / Raw view / Map view** above the map to switch imagery while keeping your position, zoom and selected screen. The gameplay version uses reviewed room matches from the 20 October recording; its current capture count appears beside the toggle. Unmatched rooms use the normal image. The selected-screen preview identifies captures and fallback imagery. Map view overlays genuine in-game cartography on subdued gameplay. Historical layouts support Raw view only.
 - Focus the main canvas for arrow-key panning, `+` / `-` zoom, `0` to fit, and Escape to clear selection.
 - Use the header menu button to show or hide the screen browser. Drag its divider to resize it on desktop; focus the divider and use arrow keys for keyboard resizing. Historical atlases are selected with the date dropdown.
-- **Save screen** exports the untouched 320 × 176 atlas slice. **Save visible map** exports visible source imagery at native resolution, without UI or highlight overlays.
-- The URL automatically records `map`, `top`, `bottom`, `left`, `right`, optional `room` and `imagery=gameplay` when enabled. **Share** copies it. Older `#map=...&x=...&y=...&z=...` links remain readable on initial load.
+- **Save screen** exports the active 320 × 176 imagery slice. **Save visible map** exports visible source imagery at native resolution, without UI or highlight overlays.
+- The URL automatically records `map`, `top`, `bottom`, `left`, `right`, optional `room` and `imagery=gameplay` or `imagery=map` when enabled. **Share** copies it. Older `#map=...&x=...&y=...&z=...` links remain readable on initial load.
 
 Screen cells are detected from populated 320 × 176 divisions of the flattened atlas. IDs follow the source-image origin and include its outer margins; they are not verified game room names. Detection is based on visible pixels and may include artefacts or omit visually empty cells. This does not establish completeness of all game areas. Canvas X increases rightwards and Y downwards, with no inversion or rotation. Downsampling is smoothed to avoid moiré; magnified pixels stay crisp.
 
@@ -179,3 +179,9 @@ python3 scripts/build_gameplay_atlas.py .local/capture-analysis/complete-cleaned
 ```
 
 Repairs are derivatives: original videos, samples and room exports remain intact. Cleaned copies of all 88 original full-resolution room exports are in `.local/capture-analysis/saved-room-exports-cleaned/`; the six original examples have cleaned siblings in `.local/capture-analysis/examples-cleaned/`. Exact changed-pixel masks and private provenance accompany the derivatives. The public metadata retains sanitised repair methods, rectangles and approximation flags, and the preview identifies locally repaired imagery. Approximate repairs may have tiny colour seams and must not be treated as recovered evidence of hidden level geometry.
+
+### In-game map overlay
+
+The local `public/map/in-game-map.png` comes from [Silverfeelin/AnimalWell-Helper](https://github.com/Silverfeelin/AnimalWell-Helper/blob/81432337b6a95ddbb951e6efcf5d256c2f82e517/src/assets/game/map.png). ANIMAL WELL © 2024 Shared Memory LLC; game assets are explicitly excluded from that repository’s MIT licence. The source author describes educational fair-use intent, which is not a redistribution licence.
+
+Run `python3 scripts/build_map_overlay.py` with Pillow and NumPy to rebuild the local overlay. The 640 × 352 map has 40 × 22 pixels per room; nearest-neighbour scaling by eight places it at atlas coordinates (640, 704), covering rooms 02,04 through 17,19. The source’s coloured pixels overlay a dimmed gameplay atlas. Pixel edges remain crisp at high zoom; vector tracing would add no real detail. `public/map/overlay.json` records the pinned source, checksum and exact transform. The ordinary map omits some hidden or cheat-only details; the overlay does not establish complete geometry in those places.

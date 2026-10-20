@@ -50,3 +50,15 @@ test('viewUrl shares gameplay imagery and removes it when returning to normal', 
   assert.equal(normal.searchParams.get('room'), '02,04');
   assert.equal(viewUrl(gameplay, 'latest', bounds).searchParams.has('imagery'), false);
 });
+
+test('viewUrl shares the map overlay beneath a Pages path and switches between all imagery modes', () => {
+  const bounds = { top: 704, bottom: 880, left: 640, right: 960 };
+  const overlay = viewUrl(new URL('https://example.github.io/wellness-camp/?imagery=gameplay'), 'latest', bounds, '02,04', 'map');
+  assert.equal(overlay.pathname, '/wellness-camp/');
+  assert.equal(overlay.searchParams.get('imagery'), 'map');
+  assert.equal(overlay.searchParams.get('room'), '02,04');
+  assert.deepEqual(readView(overlay.searchParams), bounds);
+  const game = viewUrl(overlay, 'latest', bounds, '02,04', 'gameplay');
+  assert.equal(game.searchParams.get('imagery'), 'gameplay');
+  assert.equal(viewUrl(overlay, 'latest', bounds, '02,04', 'normal').searchParams.has('imagery'), false);
+});

@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { imageBounds } from './camera';
 import { detectScreens } from './screens';
 import { GAMEPLAY_ATLAS } from './gameplay';
+import { MAP_LAYER } from './mapLayer';
 import type { AtlasContent, ImageryMode, MapEntry } from './types';
 
 /** Load one local atlas and derive selectable cells without altering its source image. */
@@ -9,7 +10,8 @@ export function useAtlasContent(map: MapEntry, imagery: ImageryMode = 'normal') 
   const [content, setContent] = useState<AtlasContent | null>(null);
   const [status, setStatus] = useState('Loading atlas…');
   const gameplay = imagery === 'gameplay' && map.id === GAMEPLAY_ATLAS.mapId;
-  const file = gameplay ? GAMEPLAY_ATLAS.file : map.file;
+  const mapOverlay = imagery === 'map' && map.id === MAP_LAYER.mapId;
+  const file = mapOverlay ? MAP_LAYER.file : gameplay ? GAMEPLAY_ATLAS.file : map.file;
   useEffect(() => {
     let cancelled = false;
     const image = new Image(); image.decoding = 'async';
@@ -28,7 +30,7 @@ export function useAtlasContent(map: MapEntry, imagery: ImageryMode = 'normal') 
       const screens = map.id === GAMEPLAY_ATLAS.mapId
         ? detected.filter(screen => screen.column >= left && screen.column <= right && screen.row >= top && screen.row <= bottom)
         : detected;
-      setContent({ image, bounds: imageBounds(image), screens,
+      setContent({ mapOverlay, image, bounds: imageBounds(image), screens,
         gameplayScreens: gameplay ? new Set(GAMEPLAY_ATLAS.roomIds) : undefined,
         mergedScreens: gameplay ? new Set(GAMEPLAY_ATLAS.mergedRoomIds) : undefined,
         inferredScreens: gameplay ? new Set(GAMEPLAY_ATLAS.inferredRoomIds) : undefined,
@@ -42,6 +44,6 @@ export function useAtlasContent(map: MapEntry, imagery: ImageryMode = 'normal') 
       // Keep loaded dimensions available while Atlas compares the old and new imagery.
       if (!image.complete) image.src = '';
     };
-  }, [map.id, file, gameplay]);
+  }, [map.id, file, gameplay, mapOverlay]);
   return { content, status };
 }

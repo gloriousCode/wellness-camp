@@ -20,7 +20,7 @@ export function viewUrl(url: URL, map: string, view: WorldView, screen?: string,
   result.search = '';
   result.searchParams.set('map', map);
   for (const key of ['top', 'bottom', 'left', 'right'] as const) result.searchParams.set(key, view[key].toFixed(3));
-  if (imagery === 'gameplay') result.searchParams.set('imagery', imagery);
+  if (imagery !== 'normal') result.searchParams.set('imagery', imagery);
   if (screen) result.searchParams.set('room', screen);
   else result.searchParams.delete('room');
   return result;
