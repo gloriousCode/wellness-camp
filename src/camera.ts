@@ -35,3 +35,11 @@ export function imageBounds(image: HTMLImageElement): Bounds {
   return { x: Math.max(0, left - 2) / ratio, y: Math.max(0, top - 2) / ratio,
     width: (right - left + 5) / ratio, height: (bottom - top + 5) / ratio };
 }
+
+/** Frame explicit world bounds without reversing the image's downward-positive Y axis. */
+export function cameraForView(view: import('./types').WorldView, size: Size): Camera {
+  const width = view.right - view.left, height = view.bottom - view.top;
+  const scale = Math.max(0.025, Math.min(size.width / width, size.height / height, 12));
+  return { scale, x: size.width / 2 - (view.left + view.right) / 2 * scale,
+    y: size.height / 2 - (view.top + view.bottom) / 2 * scale };
+}

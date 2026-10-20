@@ -8,7 +8,7 @@ export function Minimap({ image, bounds, camera, size, onLocate }: Props) {
   useEffect(() => {
     const canvas = ref.current!;
     const ctx = canvas.getContext('2d')!;
-    ctx.imageSmoothingEnabled = false;
+    ctx.imageSmoothingEnabled = true; ctx.imageSmoothingQuality = 'high';
     ctx.fillStyle = '#070c10'; ctx.fillRect(0, 0, width, height);
     ctx.drawImage(image, bounds.x, bounds.y, bounds.width, bounds.height, 0, 0, width, height);
     const sx = width / bounds.width, sy = height / bounds.height;
