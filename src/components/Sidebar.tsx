@@ -1,13 +1,13 @@
 import { useMemo, useRef, useState } from 'react';
-import type { AtlasContent, Manifest, MapEntry, Screen } from '../types';
+import type { AtlasContent, Manifest, Screen } from '../types';
 import { ScreenPreview } from './ScreenPreview';
 import { screenMatches } from '../screens';
 interface Props {
-  manifest: Manifest; map: MapEntry; content: AtlasContent | null; selected?: Screen;
-  onMap: (id: string) => void; onScreen: (screen: Screen) => void; onWorld: () => void;
+  manifest: Manifest; content: AtlasContent | null; selected?: Screen;
+  onScreen: (screen: Screen) => void; onWorld: () => void;
   onClear: () => void; onSave: (screen?: Screen) => void; width: number; onWidth: (width: number) => void;
 }
-export function Sidebar({ manifest, map, content, selected, onMap, onScreen, onWorld, onClear, onSave, width, onWidth }: Props) {
+export function Sidebar({ manifest, content, selected, onScreen, onWorld, onClear, onSave, width, onWidth }: Props) {
   const [query, setQuery] = useState('');
   const resizeStart = useRef<{ x: number; width: number } | null>(null);
   const resize = (value: number) => onWidth(Math.max(180, Math.min(480, window.innerWidth * 0.65, value)));
@@ -16,10 +16,7 @@ export function Sidebar({ manifest, map, content, selected, onMap, onScreen, onW
   }, [content, query]);
   const rows = [...new Set(screens.map(screen => screen.row))];
   return <aside className="room-sidebar" aria-label="Screen browser">
-    <div className="map-picker"><label htmlFor="map-version">ANIMAL WELL <span>ATLAS</span></label>
-      <select id="map-version" aria-label="Map version" value={map.id} onChange={event => onMap(event.target.value)}>
-        {[...manifest.maps].reverse().map(entry => <option key={entry.id} value={entry.id}>{entry.date} · {entry.id.slice(9, 15)}{entry.id === '20240603_4757794989373292024' ? ' · latest' : ''}</option>)}
-      </select></div>
+    <div className="map-picker"><div className="atlas-heading">ANIMAL WELL <span>ATLAS</span></div></div>
     <div className="room-search"><label className="sr-only" htmlFor="screen-search">Search screens</label><input id="screen-search" value={query} onChange={event => setQuery(event.target.value)} placeholder="Search screens, e.g. 08,12" /><button aria-label="Clear screen search" onClick={() => setQuery('')}>×</button></div>
     <button className={`world-button ${selected ? '' : 'active'}`} onClick={onWorld}><span>▦ &nbsp; Whole world</span><span>{content?.screens.length ?? '…'}</span></button>
     <div className="room-list" aria-label="Available screens">

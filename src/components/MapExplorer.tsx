@@ -12,8 +12,8 @@ import { ImageryToggle } from './ImageryToggle';
 const DEFAULT_MAP = '20240603_4757794989373292024';
 interface Props { manifest: Manifest }
 export function MapExplorer({ manifest }: Props) {
-  const [mapId, setMapId] = useState(() => { const id = new URLSearchParams(location.search).get('map') || new URLSearchParams(location.hash.slice(1)).get('map') || DEFAULT_MAP; return manifest.maps.some(map => map.id === id) ? id : DEFAULT_MAP; });
-  const map = manifest.maps.find(entry => entry.id === mapId)!;
+  const map = manifest.maps.find(entry => entry.id === DEFAULT_MAP)!;
+  const mapId = map.id;
   const gameplayAvailable = mapId === GAMEPLAY_ATLAS.mapId;
   const mapAvailable = mapId === MAP_LAYER.mapId;
   const [imagery, setImagery] = useState<ImageryMode>(() => {
@@ -45,9 +45,7 @@ export function MapExplorer({ manifest }: Props) {
   }, [content, view, mapId, selected, mode]);
   useEffect(() => {
     const navigate = () => {
-      const url = new URL(location.href), id = url.searchParams.get('map') || DEFAULT_MAP;
-      if (!manifest.maps.some(entry => entry.id === id)) return;
-      setMapId(id);
+      const url = new URL(location.href), id = mapId;
       const requested = url.searchParams.get('imagery');
       setImagery(requested === 'gameplay' && id === GAMEPLAY_ATLAS.mapId ? 'gameplay' : requested === 'map' && id === MAP_LAYER.mapId ? 'map' : 'normal');
       const room = content?.screens.find(entry => entry.id === url.searchParams.get('room'));
@@ -58,8 +56,7 @@ export function MapExplorer({ manifest }: Props) {
     };
     window.addEventListener('popstate', navigate);
     return () => window.removeEventListener('popstate', navigate);
-  }, [manifest, content]);
-  const changeMap = (id: string) => { setMapId(id); setSelected(undefined); if (imagery === 'gameplay' && id !== GAMEPLAY_ATLAS.mapId || imagery === 'map' && id !== MAP_LAYER.mapId) setImagery('normal'); };
+  }, [mapId, content]);
   const selectScreen = (screen: Screen) => { setSelected(screen); atlas.current?.focus(screen); if (window.innerWidth <= 700) setSidebarOpen(false); };
   const world = () => { setSelected(undefined); atlas.current?.fit(); };
   const copyView = async () => {
@@ -74,10 +71,10 @@ export function MapExplorer({ manifest }: Props) {
   };
   return <div className={`camp-app ${sidebarOpen ? 'with-sidebar' : ''}`} style={{ '--sidebar-width': `${sidebarWidth}px` } as CSSProperties}>
     <header className="camp-header"><button className="menu-toggle" aria-label="Toggle screen browser" aria-expanded={sidebarOpen} onClick={() => setSidebarOpen(value => !value)}>☰</button>
-      <a className="camp-brand" href="./" onClick={event => { event.preventDefault(); setMapId(DEFAULT_MAP); world(); }}>wellness<span>camp.</span></a><span className="header-subtitle">ANIMAL WELL</span>
+      <a className="camp-brand" href="./" onClick={event => { event.preventDefault(); world(); }}>wellness<span>camp.</span></a><span className="header-subtitle">ANIMAL WELL</span>
       <nav aria-label="Viewer actions"><button onClick={copyView}>Share ↗</button><button aria-label="Open viewer settings" aria-expanded={settings} onClick={() => setSettings(value => !value)}>⚙</button></nav>
     </header>
-    {sidebarOpen && <Sidebar width={sidebarWidth} onWidth={setSidebarWidth} manifest={manifest} map={map} content={content} selected={selected} onMap={changeMap} onScreen={selectScreen} onWorld={world} onClear={() => setSelected(undefined)} onSave={screen => atlas.current?.save(screen)} />}
+    {sidebarOpen && <Sidebar width={sidebarWidth} onWidth={setSidebarWidth} manifest={manifest} content={content} selected={selected} onScreen={selectScreen} onWorld={world} onClear={() => setSelected(undefined)} onSave={screen => atlas.current?.save(screen)} />}
     <main className="map-workspace">
       <section className="main-map" aria-label={mode === 'gameplay' ? 'Game view atlas' : mode === 'map' ? 'In-game map overlay atlas' : 'Raw layout atlas'}><div className="map-title"><strong>Animal Well</strong><span>{selected ? `Screen ${selected.id}` : 'Whole world'} · {map.date}</span><ImageryToggle mode={mode} onChange={setImagery} available={gameplayAvailable} mapAvailable={mapAvailable} count={GAMEPLAY_ATLAS.roomIds.length} totalCount={content?.screens.length} inferredCount={GAMEPLAY_ATLAS.inferredRoomIds.length} /></div>
         <div className="map-surface"><Atlas ref={atlas} content={content} status={status} mapId={mapId} grid={grid} minimap={minimap} selected={selected} onSelect={onSelect} onCamera={onCamera} onPixel={onPixel} onError={notify} />

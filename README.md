@@ -2,7 +2,7 @@
 
 A free, unofficial Animal Well atlas for studying level design. Built with React, TypeScript and Vite; the production output is a static website suitable for GitHub Pages.
 
-The default atlas is **20240603_4757794989373292024**. All 94 map images from cwithw's collection are local, but the browser loads only the selected image. The default image is 8,320 × 4,576 pixels and approximately 1.77 MB; the complete atlas archive is 157,515,760 bytes.
+The retained atlas is **20240603_4757794989373292024**, stored locally at 8,320 × 4,576 pixels (approximately 1.77 MB). Earlier development versions are omitted from the site and repository checkout; they remain recoverable from Git history.
 
 ## Run locally
 
@@ -25,9 +25,9 @@ The interface follows Berry Camp's map-first approach: a searchable screen list,
 - Right-click a screen for focus/save actions. The selected-screen panel provides the same actions for touch and keyboard use.
 - **Fit world** frames visible content; **1:1** displays one source pixel per CSS pixel.
 - Click the minimap to relocate. Settings toggle screen boundaries and the minimap.
-- Use **Game view / Raw view / Map view** above the map to switch imagery while keeping your position, zoom and selected screen. The gameplay version uses reviewed room matches from the 20 October recording; its current capture count appears beside the toggle. Unmatched rooms use the normal image. The selected-screen preview identifies captures and fallback imagery. Map view overlays genuine in-game cartography on subdued gameplay. Historical layouts support Raw view only.
+- Use **Game view / Raw view / Map view** above the map to switch imagery while keeping your position, zoom and selected screen. The gameplay version uses reviewed room matches from the 20 October recording; its current capture count appears beside the toggle. Unmatched rooms use the normal image. The selected-screen preview identifies captures and fallback imagery. Map view overlays genuine in-game cartography on subdued gameplay.
 - Focus the main canvas for arrow-key panning, `+` / `-` zoom, `0` to fit, and Escape to clear selection.
-- Use the header menu button to show or hide the screen browser. Drag its divider to resize it on desktop; focus the divider and use arrow keys for keyboard resizing. Historical atlases are selected with the date dropdown.
+- Use the header menu button to show or hide the screen browser. Drag its divider to resize it on desktop; focus the divider and use arrow keys for keyboard resizing.
 - **Save screen** exports the active 320 × 176 imagery slice. **Save visible map** exports visible source imagery at native resolution, without UI or highlight overlays.
 - The URL automatically records `map`, `top`, `bottom`, `left`, `right`, optional `room` and `imagery=gameplay` or `imagery=map` when enabled. **Share** copies it. Older `#map=...&x=...&y=...&z=...` links remain readable on initial load.
 
@@ -105,7 +105,7 @@ The existing-room filter keeps coverage fixed for a merge-only pass. The expande
 
 Atlas images: [cwithw/animal-well-old-maps](https://github.com/cwithw/animal-well-old-maps), source commit `2d187a1dda307dab714956bdddf0992c81b0fddc`. The [original viewer](https://cwithw.github.io/animal-well-old-maps/) explains that older layouts use newer textures. These are textured layouts rather than full-fidelity gameplay captures. Alternate dimensions, secrets, room states and parity with later game builds have not been independently verified. The newest atlas is dated 3 June 2024.
 
-`public/maps.json` records original IDs, sizes, SHA-256 checksums and the pinned source commit. The retained importer explicitly refreshes that collection:
+`public/maps.json` records original IDs, sizes, SHA-256 checksums and the pinned source commit. The retained importer explicitly refreshes only this retained image from the pinned source:
 
 ```sh
 python3 scripts/import_maps.py

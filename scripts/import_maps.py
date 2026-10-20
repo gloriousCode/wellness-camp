@@ -1,5 +1,4 @@
-"""Import the original versioned map images with pinned provenance."""
-from concurrent.futures import ThreadPoolExecutor
+"""Import the retained latest map image with pinned provenance."""
 from pathlib import Path
 import hashlib
 import json
@@ -16,9 +15,8 @@ def read_url(url):
 
 
 def main():
-    commit = json.loads(read_url(f'https://api.github.com/repos/{REPO}/commits/main'))['sha']
+    commit = '2d187a1dda307dab714956bdddf0992c81b0fddc'
     base = f'https://raw.githubusercontent.com/{REPO}/{commit}'
-    versions = json.loads(read_url(f'{base}/metadata.json'))
     destination = ROOT / 'public/maps'
     destination.mkdir(parents=True, exist_ok=True)
 
@@ -31,8 +29,7 @@ def main():
         return {'id': version, 'date': date, 'file': f'maps/{filename}',
                 'bytes': len(image), 'sha256': hashlib.sha256(image).hexdigest()}
 
-    with ThreadPoolExecutor(max_workers=6) as pool:
-        maps = list(pool.map(fetch, versions))
+    maps = [fetch('20240603_4757794989373292024')]
     manifest = {'source': f'https://github.com/{REPO}', 'commit': commit,
                 'sourceViewer': 'https://cwithw.github.io/animal-well-old-maps/',
                 'textureNote': 'The source uses newer textures when rendering older layouts.',
