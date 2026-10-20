@@ -9,14 +9,14 @@ export function Minimap({ image, bounds, camera, size, onLocate }: Props) {
     const canvas = ref.current!;
     const ctx = canvas.getContext('2d')!;
     ctx.imageSmoothingEnabled = true; ctx.imageSmoothingQuality = 'high';
-    ctx.fillStyle = '#070c10'; ctx.fillRect(0, 0, width, height);
+    ctx.fillStyle = '#050713'; ctx.fillRect(0, 0, width, height);
     ctx.drawImage(image, bounds.x, bounds.y, bounds.width, bounds.height, 0, 0, width, height);
     const sx = width / bounds.width, sy = height / bounds.height;
     const x = (-camera.x / camera.scale - bounds.x) * sx;
     const y = (-camera.y / camera.scale - bounds.y) * sy;
-    ctx.fillStyle = '#caed8928';
+    ctx.fillStyle = '#b59aff28';
     ctx.fillRect(x, y, size.width / camera.scale * sx, size.height / camera.scale * sy);
-    ctx.strokeStyle = '#d8f6a5'; ctx.lineWidth = 1.5;
+    ctx.strokeStyle = '#8de6e6'; ctx.lineWidth = 1.5;
     ctx.strokeRect(x, y, size.width / camera.scale * sx, size.height / camera.scale * sy);
   }, [image, bounds, camera, size, height]);
   return <div className="minimap"><div className="eyebrow">WORLD POSITION <span>↗</span></div>

@@ -88,7 +88,7 @@ export const Atlas = forwardRef<AtlasHandle, Props>(function Atlas({ content, st
     const dpr = Math.min(window.devicePixelRatio || 1, 2);
     canvas.width = Math.round(size.width * dpr); canvas.height = Math.round(size.height * dpr);
     const ctx = canvas.getContext('2d')!;
-    ctx.scale(dpr, dpr); ctx.fillStyle = '#171b20'; ctx.fillRect(0, 0, size.width, size.height);
+    ctx.scale(dpr, dpr); ctx.fillStyle = '#070b19'; ctx.fillRect(0, 0, size.width, size.height);
     if (content) {
       // Smooth downsampling prevents moiré; magnification retains exact pixel edges.
       ctx.imageSmoothingEnabled = camera.scale < 1; ctx.imageSmoothingQuality = 'high';
@@ -97,12 +97,12 @@ export const Atlas = forwardRef<AtlasHandle, Props>(function Atlas({ content, st
         const width = screen.width * camera.scale, height = screen.height * camera.scale;
         if (x > size.width || y > size.height || x + width < 0 || y + height < 0) continue;
         ctx.drawImage(content.image, screen.x, screen.y, screen.width, screen.height, x, y, width, height);
-        if (grid) { ctx.strokeStyle = '#e0e3e73d'; ctx.lineWidth = 1; ctx.strokeRect(x, y, width, height); }
+        if (grid) { ctx.strokeStyle = '#adb8ec3d'; ctx.lineWidth = 1; ctx.strokeRect(x, y, width, height); }
       }
-      for (const [screen, colour] of [[hover, '#ffffffa0'], [selected, '#d6e99e']] as const) {
+      for (const [screen, colour] of [[hover, '#c9c1ffa0'], [selected, '#6de0dd']] as const) {
         if (!screen) continue;
         const x = camera.x + screen.x * camera.scale, y = camera.y + screen.y * camera.scale;
-        ctx.fillStyle = screen === selected ? '#d6e99e16' : '#ffffff0c';
+        ctx.fillStyle = screen === selected ? '#6de0dd16' : '#b59aff0c';
         ctx.fillRect(x, y, screen.width * camera.scale, screen.height * camera.scale);
         ctx.strokeStyle = colour; ctx.lineWidth = screen === selected ? 2 : 1;
         ctx.strokeRect(x, y, screen.width * camera.scale, screen.height * camera.scale);
