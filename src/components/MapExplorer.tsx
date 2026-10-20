@@ -5,7 +5,6 @@ import { cameraView, readView, viewUrl } from '../viewUrl';
 import type { AtlasHandle, Camera, Manifest, Screen, Size } from '../types';
 import { Atlas } from './Atlas';
 import { Sidebar } from './Sidebar';
-import { ReferenceStudy } from './ReferenceStudy';
 
 const DEFAULT_MAP = '20240603_4757794989373292024';
 interface Props { manifest: Manifest }
@@ -19,7 +18,6 @@ export function MapExplorer({ manifest }: Props) {
   const [sidebarOpen, setSidebarOpen] = useState(() => window.innerWidth > 700);
   const [sidebarWidth, setSidebarWidth] = useState(() => window.innerWidth > 1100 ? 278 : 238);
   const [settings, setSettings] = useState(false);
-  const [compare, setCompare] = useState(() => new URLSearchParams(location.search).get('compare') === '1');
   const [view, setView] = useState<{ camera: Camera; size: Size }>({ camera: { x: 0, y: 0, scale: 0.1 }, size: { width: 1, height: 1 } });
   const [pixel, setPixel] = useState({ x: 0, y: 0 });
   const [notice, setNotice] = useState('');
@@ -63,13 +61,12 @@ export function MapExplorer({ manifest }: Props) {
   };
   return <div className={`camp-app ${sidebarOpen ? 'with-sidebar' : ''}`} style={{ '--sidebar-width': `${sidebarWidth}px` } as CSSProperties}>
     <header className="camp-header"><button className="menu-toggle" aria-label="Toggle screen browser" aria-expanded={sidebarOpen} onClick={() => setSidebarOpen(value => !value)}>☰</button>
-      <a className="camp-brand" href="./" onClick={event => { event.preventDefault(); setCompare(false); const url = new URL(location.href); url.searchParams.delete('compare'); history.replaceState(null, '', url); setMapId(DEFAULT_MAP); world(); }}>wellness<span>camp.</span></a><span className="header-subtitle">ANIMAL WELL</span>
-      <nav aria-label="Viewer actions"><button className={compare ? 'active' : ''} onClick={() => { const next = !compare; setCompare(next); const url = new URL(location.href); if (next) url.searchParams.set('compare', '1'); else url.searchParams.delete('compare'); history.replaceState(null, '', url); }} aria-pressed={compare}>Compare capture</button><button onClick={copyView}>Share ↗</button><button aria-label="Open viewer settings" aria-expanded={settings} onClick={() => setSettings(value => !value)}>⚙</button></nav>
+      <a className="camp-brand" href="./" onClick={event => { event.preventDefault(); setMapId(DEFAULT_MAP); world(); }}>wellness<span>camp.</span></a><span className="header-subtitle">ANIMAL WELL</span>
+      <nav aria-label="Viewer actions"><button onClick={copyView}>Share ↗</button><button aria-label="Open viewer settings" aria-expanded={settings} onClick={() => setSettings(value => !value)}>⚙</button></nav>
     </header>
     {sidebarOpen && <Sidebar width={sidebarWidth} onWidth={setSidebarWidth} manifest={manifest} map={map} content={content} selected={selected} onMap={id => { setMapId(id); setSelected(undefined); }} onScreen={selectScreen} onWorld={world} onClear={() => setSelected(undefined)} onSave={screen => atlas.current?.save(screen)} />}
-    <main className={`map-workspace ${compare ? 'comparing' : ''}`}>
-      {compare && <ReferenceStudy />}
-      <section className="main-map" aria-label="Clean layout atlas"><div className="map-title"><strong>{compare ? 'Exported layout reference' : 'Animal Well'}</strong><span>{selected ? `Screen ${selected.id}` : 'Whole world'} · {map.date}</span></div>
+    <main className="map-workspace">
+      <section className="main-map" aria-label="Clean layout atlas"><div className="map-title"><strong>Animal Well</strong><span>{selected ? `Screen ${selected.id}` : 'Whole world'} · {map.date}</span></div>
         <div className="map-surface"><Atlas ref={atlas} content={content} status={status} mapId={mapId} grid={grid} minimap={minimap} selected={selected} onSelect={onSelect} onCamera={onCamera} onPixel={onPixel} onError={notify} />
           <div className="zoom-controls" aria-label="Map controls"><button aria-label="Zoom in" onClick={() => atlas.current?.zoom(1.5)}>＋</button><output aria-label="Zoom level">{Math.round(view.camera.scale * 100)}%</output><button aria-label="Zoom out" onClick={() => atlas.current?.zoom(1 / 1.5)}>−</button><span className="control-line" /><button className="fit-button" onClick={world}>Fit world</button><button className="native-button" onClick={() => atlas.current?.native()}>1:1</button><button aria-label="Toggle fullscreen" onClick={fullscreen}>⛶</button></div>
         </div><footer className="map-status"><span>Drag · scroll to zoom · double-click a screen to focus</span><output aria-label="Image coordinates">X {pixel.x.toLocaleString()} &nbsp; Y {pixel.y.toLocaleString()}</output></footer>

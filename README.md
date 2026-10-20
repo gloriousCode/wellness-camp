@@ -32,14 +32,6 @@ The interface follows Berry Camp's map-first approach: a searchable screen list,
 
 Screen cells are detected from populated 320 × 176 divisions of the flattened atlas. IDs follow the source-image origin and include its outer margins; they are not verified game room names. Detection is based on visible pixels and may include artefacts or omit visually empty cells. This does not establish completeness of all game areas. Canvas X increases rightwards and Y downwards, with no inversion or rotation. Downsampling is smoothed to avoid moiré; magnified pixels stay crisp.
 
-## Compare the gameplay screenshot composite
-
-**Compare capture** opens a separate pan/zoom panel beside the clean layout atlas. `?compare=1` opens it directly. The original 10,860 × 5,760 JPEG from [u/lazer-dream's Reddit post](https://www.reddit.com/r/animalWell/comments/1ri7dor/this_is_the_map_i_made_alongside_my_playthrough/) is retained unchanged in `public/references/lazer-dream-map.jpeg` with provenance and a checksum in the neighbouring JSON file. The creator describes 390 gameplay screenshots, about 20 annotation layers and an incomplete playthrough.
-
-The panel provides reversible **Original**, **Invert RGB** and **Invert + hue correction** display modes, a contrast slider, fit and native-pixel zoom. These are CSS previews, not reconstructed image files. The two views pan and zoom independently; no registration or synchronised alignment has been applied. The reference image loads only when the comparison panel opens.
-
-The posted image appears inverted/lightened, but the exact original Photoshop processing is unknown. An inversion cannot recover detail overwritten by annotations or recover missing rooms. No annotation removal, inpainting, fabricated lighting or automatic completeness claim has been applied. Obtaining the creator's original screenshot layers would preserve more real detail than reconstruction from the flattened JPEG.
-
 ## Check and build
 
 ```sh
@@ -63,6 +55,6 @@ Atlas images: [cwithw/animal-well-old-maps](https://github.com/cwithw/animal-wel
 python3 scripts/import_maps.py
 ```
 
-The repository's existing licence applies to this project's code; it does not grant rights to Animal Well imagery or third-party material. No image reuse licence was present in the inspected atlas source tree. Public redistribution permission for both the atlas collection and Reddit composite remains unverified. Attribution is included in the viewer and provenance records; it is not a substitute for permission.
+The repository's existing licence applies to this project's code; it does not grant rights to Animal Well imagery or third-party material. No image reuse licence was present in the inspected atlas source tree. Public redistribution permission for the atlas collection remains unverified. Attribution is included in the viewer and source manifest; it is not a substitute for permission.
 
 Animal Well © Billy Basso / Shared Memory, published by BIGMODE. This is an independent educational project with no affiliation.

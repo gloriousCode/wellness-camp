@@ -17,6 +17,7 @@ export function readView(params: URLSearchParams): WorldView | undefined {
 export function viewUrl(url: URL, map: string, view: WorldView, screen?: string): URL {
   const result = new URL(url);
   result.hash = '';
+  result.search = '';
   result.searchParams.set('map', map);
   for (const key of ['top', 'bottom', 'left', 'right'] as const) result.searchParams.set(key, view[key].toFixed(3));
   if (screen) result.searchParams.set('room', screen);
