@@ -45,6 +45,27 @@ npm run preview
 
 Publish `dist/` as a Pages artifact using GitHub Actions or an existing static Pages deployment process. No deployment, push or remote settings changes have been performed. `.local/` contains private local tooling and save backups and is excluded from Git and the production build.
 
+## Analyse a gameplay recording locally
+
+The optional capture scripts process an existing video without launching, controlling or reading the memory of the game. Video and analysis outputs belong in `.local/`; they are not published with the site. Requires FFmpeg/ffprobe on PATH, Python 3.10+, Pillow and NumPy. These tools are separate from the website's runtime dependencies.
+
+Sample keyframes with their actual video timestamps, then rank the room geometry against the atlas:
+
+```sh
+python3 scripts/sample_capture.py \
+  '.local/recordings/Screen Recording 2026-10-20 at 13.48.06.mov' \
+  .local/capture-analysis/timed \
+  --crop 112 132 2560 1408
+python3 scripts/match_capture.py \
+  --frames .local/capture-analysis/timed \
+  --output .local/capture-analysis/timed-matching
+python3 -m unittest discover -s tests -p 'test_capture_matching.py'
+```
+
+The crop is specific to the first 2784 × 1720 recording: X, Y, width, height. Recalibrate it when the game window or recording dimensions change. The sampler preserves the video, rejects existing output directories and records source timestamps in `capture.json`. Sampling keyframes is efficient but may miss briefly visited rooms.
+
+`matches.json` retains the three highest-ranked candidates per sample, heuristic acceptance thresholds, uncertain samples and the strongest accepted sample per atlas cell. Contact sheets place the captured room beside its atlas candidate for review. Scores are not probabilities, accepted candidates still need inspection, and unmatched samples do not establish that rooms are missing from the atlas. Matching ignores bottom-corner HUD regions and the cursor position from this first recording; it does not remove anything from the exported images. Player, HUD, cursor and animated effects remain intact. No gameplay captures are automatically added to the public map.
+
 ## Image provenance and limitations
 
 Atlas images: [cwithw/animal-well-old-maps](https://github.com/cwithw/animal-well-old-maps), source commit `2d187a1dda307dab714956bdddf0992c81b0fddc`. The [original viewer](https://cwithw.github.io/animal-well-old-maps/) explains that older layouts use newer textures. These are textured layouts rather than full-fidelity gameplay captures. Alternate dimensions, secrets, room states and parity with later game builds have not been independently verified. The newest atlas is dated 3 June 2024.
