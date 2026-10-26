@@ -5,8 +5,9 @@ import { GAMEPLAY_ATLAS } from '../gameplay';
 import { MAP_LAYER } from '../mapLayer';
 import { SPACE_ATLAS } from '../space';
 import { AreaPicker } from './AreaPicker';
+import { SpaceGuide } from './SpaceGuide';
 import { cameraView, readView, viewUrl } from '../viewUrl';
-import type { Area, AtlasHandle, Camera, ImageryMode, Manifest, Screen, Size } from '../types';
+import type { Area, AtlasHandle, Bounds, Camera, ImageryMode, Manifest, Screen, Size } from '../types';
 import { Atlas } from './Atlas';
 import { Sidebar } from './Sidebar';
 import { ImageryToggle } from './ImageryToggle';
@@ -71,6 +72,7 @@ export function MapExplorer({ manifest }: Props) {
     history.replaceState(null, '', url);
     setSelected(undefined); setArea(next);
   };
+  const focusLandmark = (bounds: Bounds) => { setSelected(undefined); atlas.current?.focus(bounds); if (window.innerWidth <= 700) setSidebarOpen(false); };
   const selectScreen = (screen: Screen) => { setSelected(screen); atlas.current?.focus(screen); if (window.innerWidth <= 700) setSidebarOpen(false); };
   const world = () => { setSelected(undefined); atlas.current?.fit(); };
   const copyView = async () => {
@@ -88,7 +90,7 @@ export function MapExplorer({ manifest }: Props) {
       <a className="camp-brand" href="./" onClick={event => { event.preventDefault(); world(); }}>wellness<span>camp.</span></a><span className="header-subtitle">ANIMAL WELL</span>
       <nav aria-label="Viewer actions"><button onClick={copyView}>Share ↗</button><button aria-label="Open viewer settings" aria-expanded={settings} onClick={() => setSettings(value => !value)}>⚙</button></nav>
     </header>
-    {sidebarOpen && <Sidebar key={area} width={sidebarWidth} onWidth={setSidebarWidth} manifest={manifest} areaPicker={<AreaPicker area={area} onChange={changeArea} />} content={content} selected={selected} onScreen={selectScreen} onWorld={world} onClear={() => setSelected(undefined)} onSave={screen => atlas.current?.save(screen)} />}
+    {sidebarOpen && <Sidebar key={area} width={sidebarWidth} onWidth={setSidebarWidth} manifest={manifest} areaPicker={<AreaPicker area={area} onChange={changeArea} />} spaceGuide={area === 'space' ? <SpaceGuide onFocus={focusLandmark} /> : undefined} content={content} selected={selected} onScreen={selectScreen} onWorld={world} onClear={() => setSelected(undefined)} onSave={screen => atlas.current?.save(screen)} />}
     <main className="map-workspace">
       <section className="main-map" aria-label={mode === 'gameplay' ? 'Game view atlas' : mode === 'map' ? 'In-game map overlay atlas' : 'Raw layout atlas'}><div className="map-title"><strong>{area === 'space' ? 'Bunny Island' : 'Animal Well'}</strong><span>{selected ? `Screen ${selected.id}` : 'Whole world'} · {map.date}</span><ImageryToggle space={area === 'space'} mode={mode} onChange={setImagery} available={gameplayAvailable || area === 'space'} mapAvailable={mapAvailable} count={GAMEPLAY_ATLAS.roomIds.length} totalCount={content?.screens.length} inferredCount={GAMEPLAY_ATLAS.inferredRoomIds.length} /></div>
         <div className="map-surface"><Atlas key={area} ref={atlas} content={content} status={status} mapId={mapId} grid={grid} minimap={minimap} selected={selected} onSelect={onSelect} onCamera={onCamera} onPixel={onPixel} onError={notify} />

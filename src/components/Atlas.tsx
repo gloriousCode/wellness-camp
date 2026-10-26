@@ -4,6 +4,7 @@ import { screenAt } from '../screens';
 import { cameraView, readView } from '../viewUrl';
 import type { AtlasContent, AtlasHandle, Bounds, Camera, Screen, Size } from '../types';
 import { Minimap } from './Minimap';
+import { SpaceLandmarks } from './SpaceLandmarks';
 
 interface Props {
   content: AtlasContent | null; status: string; mapId: string; grid: boolean; minimap: boolean;
@@ -174,6 +175,7 @@ export const Atlas = forwardRef<AtlasHandle, Props>(function Atlas({ content, st
         else if (event.key === 'Escape') { setMenu(undefined); onSelect(undefined); }
         else if (event.key.startsWith('Arrow')) { event.preventDefault(); setCamera(c => ({ ...c, x: c.x + (event.key === 'ArrowLeft' ? 80 : event.key === 'ArrowRight' ? -80 : 0), y: c.y + (event.key === 'ArrowUp' ? 80 : event.key === 'ArrowDown' ? -80 : 0) })); }
       }} />
+    {content?.space && <SpaceLandmarks camera={camera} size={size} onFocus={bounds => { onSelect(undefined); focus(bounds); }} />}
     {status && <div className="load-status" role="status"><span className="status-orb" />{status}</div>}
     {content && <><div className="canvas-caption">{hover ? `SCREEN ${hover.id}` : 'DRAG TO PAN · SCROLL TO ZOOM'} <span>/</span> {content.screens.length} SCREEN CELLS</div>
       {minimap && <Minimap image={content.image} bounds={content.bounds} camera={camera} size={size} onLocate={locate} />}</>}

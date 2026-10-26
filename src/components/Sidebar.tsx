@@ -4,11 +4,11 @@ import type { AtlasContent, Manifest, Screen } from '../types';
 import { ScreenPreview } from './ScreenPreview';
 import { screenMatches } from '../screens';
 interface Props {
-  areaPicker: ReactNode; manifest: Manifest; content: AtlasContent | null; selected?: Screen;
+  areaPicker: ReactNode; spaceGuide?: ReactNode; manifest: Manifest; content: AtlasContent | null; selected?: Screen;
   onScreen: (screen: Screen) => void; onWorld: () => void;
   onClear: () => void; onSave: (screen?: Screen) => void; width: number; onWidth: (width: number) => void;
 }
-export function Sidebar({ areaPicker, manifest, content, selected, onScreen, onWorld, onClear, onSave, width, onWidth }: Props) {
+export function Sidebar({ areaPicker, spaceGuide, manifest, content, selected, onScreen, onWorld, onClear, onSave, width, onWidth }: Props) {
   const [query, setQuery] = useState('');
   const resizeStart = useRef<{ x: number; width: number } | null>(null);
   const resize = (value: number) => onWidth(Math.max(180, Math.min(480, window.innerWidth * 0.65, value)));
@@ -18,6 +18,7 @@ export function Sidebar({ areaPicker, manifest, content, selected, onScreen, onW
   const rows = [...new Set(screens.map(screen => screen.row))];
   return <aside className="room-sidebar" aria-label="Screen browser">
     <div className="map-picker"><div className="atlas-heading">ANIMAL WELL <span>ATLAS</span></div>{areaPicker}</div>
+    {spaceGuide}
     <div className="room-search"><label className="sr-only" htmlFor="screen-search">Search screens</label><input id="screen-search" value={query} onChange={event => setQuery(event.target.value)} placeholder="Search screens, e.g. 08,12" /><button aria-label="Clear screen search" onClick={() => setQuery('')}>×</button></div>
     <button className={`world-button ${selected ? '' : 'active'}`} onClick={onWorld}><span>▦ &nbsp; Whole world</span><span>{content?.screens.length ?? '…'}</span></button>
     <div className="room-list" aria-label="Available screens">
