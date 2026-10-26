@@ -32,3 +32,15 @@ test('screenMatches searches coordinates in the correct column,row order', () =>
   for (const query of ['', '02,04', '2,4', 'Screen 2, 4', '04']) assert.equal(screenMatches(screen, query), true, query);
   for (const query of ['4,2', '02,05', 'no match']) assert.equal(screenMatches(screen, query), false, query);
 });
+
+test('detectScreens preserves the native 180-pixel room grid of space captures', () => {
+  const width = 40, height = 45;
+  const pixels = new Uint8ClampedArray(width * height * 4);
+  // A feature in row two must belong to Y=180, rather than the well's Y=176.
+  for (let y = 30; y < 34; y++) for (let x = 8; x < 12; x++) {
+    const offset = (y * width + x) * 4;
+    pixels[offset] = 150; pixels[offset + 3] = 255;
+  }
+  const screens = detectScreens(pixels, width, height, 320, 360, 180);
+  assert.deepEqual(screens, [{ id: '00,01', column: 0, row: 1, x: 0, y: 180, width: 320, height: 180 }]);
+});

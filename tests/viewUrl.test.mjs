@@ -62,3 +62,13 @@ test('viewUrl shares the map overlay beneath a Pages path and switches between a
   assert.equal(game.searchParams.get('imagery'), 'gameplay');
   assert.equal(viewUrl(overlay, 'latest', bounds, '02,04', 'normal').searchParams.has('imagery'), false);
 });
+
+test('viewUrl shares the space area and clears it when returning to the well', () => {
+  const bounds = { left: 320, top: 540, right: 640, bottom: 720 };
+  const space = viewUrl(new URL('https://example.com/wellness-camp/'), 'bunny-island', bounds, '01,03', 'gameplay', 'space');
+  assert.equal(space.searchParams.get('area'), 'space');
+  assert.equal(space.searchParams.get('room'), '01,03');
+  const well = viewUrl(space, '20240603_4757794989373292024', bounds, undefined, 'normal');
+  assert.equal(well.searchParams.has('area'), false);
+  assert.equal(well.searchParams.has('room'), false);
+});

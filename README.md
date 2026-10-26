@@ -30,6 +30,7 @@ In the repository’s **Settings → Pages → Build and deployment**, select **
 
 ## Explore
 
+- Choose **The well** or **Bunny Island & space** in the sidebar. Space uses its own community gameplay capture, with room focus, image export and shareable links; separate Raw and Map imagery is unavailable there.
 - Switch between **Game view**, **Raw view** and **Map view** while keeping the camera and selected room. Map view overlays the in-game map on subdued gameplay.
 - Drag to pan; scroll or pinch to zoom around the pointer. Click a room to select and focus it.
 - Search coordinates in column,row order, such as `08,12`. Bare numbers match either coordinate.
@@ -43,7 +44,7 @@ Room IDs refer to 320 × 176 image cells, not official room names. Coordinates i
 
 ## Imagery and limitations
 
-All three views use the same 8,320 × 4,576 coordinate system. The retained layout is `20240603_4757794989373292024`; earlier development images are absent from the checkout and build but remain in Git history.
+The well’s three views use the same 8,320 × 4,576 coordinate system. The retained layout is `20240603_4757794989373292024`; earlier development images are absent from the checkout and build but remain in Git history.
 
 Game view contains placements in all 256 main-grid cells from Scott’s 20 October 2026 recording. Locations `11,13` and `11,17` are inferred from neighbouring-room traversal and remain heavily obscured. Twenty-five rooms combine repeatedly supported revealed patches. Cursor footprints in all 256 cells have approximate local repairs. Player repairs in 54 rooms use other same-room frames in 26 cases and nearby-pixel approximations in 28. Other player poses, HUD, animations, lighting seams and obscured areas may remain. These are still images, not animated captures; placement coverage does not establish complete visible geometry or coverage of alternate game layers.
 
@@ -72,3 +73,9 @@ python3 scripts/build_map_overlay.py
 ```
 
 Capture matching is heuristic and requires review. Approximate repairs must not be treated as evidence of unseen level geometry.
+
+### Bunny Island and space
+
+`public/space/bunny-island.png` is the community stitched space layer by **Zip Zip**, obtained from [AnimalWell-Helper](https://github.com/Silverfeelin/AnimalWell-Helper/blob/81432337b6a95ddbb951e6efcf5d256c2f82e517/src/assets/game/maps/space/full.png). It includes the bunny gathering island, an upper structure, a small isolated island and the lower temple area. The original 2,240 × 2,880 pixels are retained without rescaling or invented fills. Its source uses 320 × 180 screenshot cells, so this area's row height differs from the well's 176 pixels. Black gaps are uncaptured source regions, not verified empty space; edge repetitions, HUD, player sprites and stitching artefacts may remain. Coverage of all space is not established.
+
+The **Area** selector separates these parallel layers instead of implying a walkable connection. Links store `area=space`; room IDs are local to the chosen area's image grid. `public/space/metadata.json` records the pinned source, checksum, credit and limitations. ANIMAL WELL copyright and the imagery reuse limitations above also apply to this asset.

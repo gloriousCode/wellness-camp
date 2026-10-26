@@ -3,8 +3,10 @@ import type { CSSProperties } from 'react';
 import { useAtlasContent } from '../hooks';
 import { GAMEPLAY_ATLAS } from '../gameplay';
 import { MAP_LAYER } from '../mapLayer';
+import { SPACE_ATLAS } from '../space';
+import { AreaPicker } from './AreaPicker';
 import { cameraView, readView, viewUrl } from '../viewUrl';
-import type { AtlasHandle, Camera, ImageryMode, Manifest, Screen, Size } from '../types';
+import type { Area, AtlasHandle, Camera, ImageryMode, Manifest, Screen, Size } from '../types';
 import { Atlas } from './Atlas';
 import { Sidebar } from './Sidebar';
 import { ImageryToggle } from './ImageryToggle';
@@ -12,7 +14,8 @@ import { ImageryToggle } from './ImageryToggle';
 const DEFAULT_MAP = '20240603_4757794989373292024';
 interface Props { manifest: Manifest }
 export function MapExplorer({ manifest }: Props) {
-  const map = manifest.maps.find(entry => entry.id === DEFAULT_MAP)!;
+  const [area, setArea] = useState<Area>(() => new URLSearchParams(location.search).get('area') === 'space' ? 'space' : 'well');
+  const map = area === 'space' ? SPACE_ATLAS : manifest.maps.find(entry => entry.id === DEFAULT_MAP)!;
   const mapId = map.id;
   const gameplayAvailable = mapId === GAMEPLAY_ATLAS.mapId;
   const mapAvailable = mapId === MAP_LAYER.mapId;
@@ -20,7 +23,7 @@ export function MapExplorer({ manifest }: Props) {
     const requested = new URLSearchParams(location.search).get('imagery');
     return requested === 'gameplay' && gameplayAvailable ? 'gameplay' : requested === 'map' && mapAvailable ? 'map' : 'normal';
   });
-  const mode = imagery === 'gameplay' && !gameplayAvailable || imagery === 'map' && !mapAvailable ? 'normal' : imagery;
+  const mode = area === 'space' ? 'gameplay' : imagery;
   const { content, status } = useAtlasContent(map, mode);
   const [selected, setSelected] = useState<Screen>();
   const [grid, setGrid] = useState(false);
@@ -40,15 +43,18 @@ export function MapExplorer({ manifest }: Props) {
   useEffect(() => () => clearTimeout(noticeTimer.current), []);
   useEffect(() => {
     if (!content || view.size.width <= 1) return;
-    const timer = setTimeout(() => history.replaceState(null, '', viewUrl(new URL(location.href), mapId, cameraView(view.camera, view.size), selected?.id, mode)), 180);
+    const timer = setTimeout(() => history.replaceState(null, '', viewUrl(new URL(location.href), mapId, cameraView(view.camera, view.size), selected?.id, mode, area)), 180);
     return () => clearTimeout(timer);
-  }, [content, view, mapId, selected, mode]);
+  }, [content, view, mapId, selected, mode, area]);
   useEffect(() => {
     const navigate = () => {
-      const url = new URL(location.href), id = mapId;
+      const url = new URL(location.href);
+      const nextArea = url.searchParams.get('area') === 'space' ? 'space' : 'well';
+      const id = nextArea === 'space' ? SPACE_ATLAS.id : DEFAULT_MAP;
+      setArea(nextArea);
       const requested = url.searchParams.get('imagery');
       setImagery(requested === 'gameplay' && id === GAMEPLAY_ATLAS.mapId ? 'gameplay' : requested === 'map' && id === MAP_LAYER.mapId ? 'map' : 'normal');
-      const room = content?.screens.find(entry => entry.id === url.searchParams.get('room'));
+      const room = nextArea === area ? content?.screens.find(entry => entry.id === url.searchParams.get('room')) : undefined;
       setSelected(room);
       const bounds = readView(url.searchParams);
       if (bounds) atlas.current?.setView(bounds);
@@ -56,11 +62,19 @@ export function MapExplorer({ manifest }: Props) {
     };
     window.addEventListener('popstate', navigate);
     return () => window.removeEventListener('popstate', navigate);
-  }, [mapId, content]);
+  }, [area, content]);
+  const changeArea = (next: Area) => {
+    const url = new URL(location.href);
+    for (const key of ['top', 'bottom', 'left', 'right', 'room']) url.searchParams.delete(key);
+    url.hash = '';
+    if (next === 'space') url.searchParams.set('area', 'space'); else url.searchParams.delete('area');
+    history.replaceState(null, '', url);
+    setSelected(undefined); setArea(next);
+  };
   const selectScreen = (screen: Screen) => { setSelected(screen); atlas.current?.focus(screen); if (window.innerWidth <= 700) setSidebarOpen(false); };
   const world = () => { setSelected(undefined); atlas.current?.fit(); };
   const copyView = async () => {
-    const url = viewUrl(new URL(location.href), mapId, cameraView(view.camera, view.size), selected?.id, mode);
+    const url = viewUrl(new URL(location.href), mapId, cameraView(view.camera, view.size), selected?.id, mode, area);
     history.replaceState(null, '', url);
     try { await navigator.clipboard.writeText(url.href); notify('Link to this view copied.'); }
     catch { notify('View saved in the address bar. Copy its URL to share.'); }
@@ -74,10 +88,10 @@ export function MapExplorer({ manifest }: Props) {
       <a className="camp-brand" href="./" onClick={event => { event.preventDefault(); world(); }}>wellness<span>camp.</span></a><span className="header-subtitle">ANIMAL WELL</span>
       <nav aria-label="Viewer actions"><button onClick={copyView}>Share ↗</button><button aria-label="Open viewer settings" aria-expanded={settings} onClick={() => setSettings(value => !value)}>⚙</button></nav>
     </header>
-    {sidebarOpen && <Sidebar width={sidebarWidth} onWidth={setSidebarWidth} manifest={manifest} content={content} selected={selected} onScreen={selectScreen} onWorld={world} onClear={() => setSelected(undefined)} onSave={screen => atlas.current?.save(screen)} />}
+    {sidebarOpen && <Sidebar key={area} width={sidebarWidth} onWidth={setSidebarWidth} manifest={manifest} areaPicker={<AreaPicker area={area} onChange={changeArea} />} content={content} selected={selected} onScreen={selectScreen} onWorld={world} onClear={() => setSelected(undefined)} onSave={screen => atlas.current?.save(screen)} />}
     <main className="map-workspace">
-      <section className="main-map" aria-label={mode === 'gameplay' ? 'Game view atlas' : mode === 'map' ? 'In-game map overlay atlas' : 'Raw layout atlas'}><div className="map-title"><strong>Animal Well</strong><span>{selected ? `Screen ${selected.id}` : 'Whole world'} · {map.date}</span><ImageryToggle mode={mode} onChange={setImagery} available={gameplayAvailable} mapAvailable={mapAvailable} count={GAMEPLAY_ATLAS.roomIds.length} totalCount={content?.screens.length} inferredCount={GAMEPLAY_ATLAS.inferredRoomIds.length} /></div>
-        <div className="map-surface"><Atlas ref={atlas} content={content} status={status} mapId={mapId} grid={grid} minimap={minimap} selected={selected} onSelect={onSelect} onCamera={onCamera} onPixel={onPixel} onError={notify} />
+      <section className="main-map" aria-label={mode === 'gameplay' ? 'Game view atlas' : mode === 'map' ? 'In-game map overlay atlas' : 'Raw layout atlas'}><div className="map-title"><strong>{area === 'space' ? 'Bunny Island' : 'Animal Well'}</strong><span>{selected ? `Screen ${selected.id}` : 'Whole world'} · {map.date}</span><ImageryToggle space={area === 'space'} mode={mode} onChange={setImagery} available={gameplayAvailable || area === 'space'} mapAvailable={mapAvailable} count={GAMEPLAY_ATLAS.roomIds.length} totalCount={content?.screens.length} inferredCount={GAMEPLAY_ATLAS.inferredRoomIds.length} /></div>
+        <div className="map-surface"><Atlas key={area} ref={atlas} content={content} status={status} mapId={mapId} grid={grid} minimap={minimap} selected={selected} onSelect={onSelect} onCamera={onCamera} onPixel={onPixel} onError={notify} />
           <div className="zoom-controls" aria-label="Map controls"><button aria-label="Zoom in" onClick={() => atlas.current?.zoom(1.5)}>＋</button><output aria-label="Zoom level">{Math.round(view.camera.scale * 100)}%</output><button aria-label="Zoom out" onClick={() => atlas.current?.zoom(1 / 1.5)}>−</button><span className="control-line" /><button className="fit-button" onClick={world}>Fit world</button><button className="native-button" onClick={() => atlas.current?.native()}>1:1</button><button aria-label="Toggle fullscreen" onClick={fullscreen}>⛶</button></div>
         </div><footer className="map-status"><span>Drag · scroll to zoom · click a screen to focus</span><output aria-label="Image coordinates">X {pixel.x.toLocaleString()} &nbsp; Y {pixel.y.toLocaleString()}</output></footer>
       </section>

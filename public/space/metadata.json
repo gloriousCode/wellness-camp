@@ -1,0 +1,19 @@
+{
+  "id": "bunny-island",
+  "date": "Community capture",
+  "file": "space/bunny-island.png",
+  "bytes": 781195,
+  "sha256": "3232a092b04c084cad119174fc1bfde1e45f285195ada2936b0037a696c28d31",
+  "source": "https://github.com/Silverfeelin/AnimalWell-Helper/blob/81432337b6a95ddbb951e6efcf5d256c2f82e517/src/assets/game/maps/space/full.png",
+  "credit": "Space layer by Zip Zip, distributed in AnimalWell-Helper",
+  "copyright": "ANIMAL WELL \u00a9 2024 Shared Memory LLC. Game assets are excluded from the upstream MIT licence.",
+  "dimensions": [
+    2240,
+    2880
+  ],
+  "roomSize": [
+    320,
+    180
+  ],
+  "note": "Community stitched gameplay image; includes uncaptured black gaps, capture HUD and repeated edge rooms. Not a complete survey of all space."
+}

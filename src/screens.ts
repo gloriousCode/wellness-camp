@@ -3,15 +3,15 @@ export const SCREEN_WIDTH = 320;
 export const SCREEN_HEIGHT = 176;
 
 /** Identify populated atlas cells from a reduced pixel buffer; IDs refer to image coordinates. */
-export function detectScreens(pixels: Uint8ClampedArray, width: number, height: number, imageWidth: number, imageHeight: number): Screen[] {
+export function detectScreens(pixels: Uint8ClampedArray, width: number, height: number, imageWidth: number, imageHeight: number, roomHeight = SCREEN_HEIGHT): Screen[] {
   const screens: Screen[] = [];
   const columns = Math.ceil(imageWidth / SCREEN_WIDTH);
-  const rows = Math.ceil(imageHeight / SCREEN_HEIGHT);
+  const rows = Math.ceil(imageHeight / roomHeight);
   for (let row = 0; row < rows; row++) {
     for (let column = 0; column < columns; column++) {
-      const x = column * SCREEN_WIDTH, y = row * SCREEN_HEIGHT;
+      const x = column * SCREEN_WIDTH, y = row * roomHeight;
       const cellWidth = Math.min(SCREEN_WIDTH, imageWidth - x);
-      const cellHeight = Math.min(SCREEN_HEIGHT, imageHeight - y);
+      const cellHeight = Math.min(roomHeight, imageHeight - y);
       const left = Math.ceil(x / imageWidth * width);
       const right = Math.min(width, Math.ceil((x + cellWidth) / imageWidth * width));
       const top = Math.ceil(y / imageHeight * height);

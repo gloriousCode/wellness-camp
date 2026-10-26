@@ -1,4 +1,4 @@
-import type { Camera, ImageryMode, Size, WorldView } from './types';
+import type { Area, Camera, ImageryMode, Size, WorldView } from './types';
 
 /** Bounds increase rightwards and downwards, matching image and canvas coordinates. */
 export function cameraView(camera: Camera, size: Size): WorldView {
@@ -14,11 +14,12 @@ export function readView(params: URLSearchParams): WorldView | undefined {
   return view;
 }
 
-export function viewUrl(url: URL, map: string, view: WorldView, screen?: string, imagery: ImageryMode = 'normal'): URL {
+export function viewUrl(url: URL, map: string, view: WorldView, screen?: string, imagery: ImageryMode = 'normal', area: Area = 'well'): URL {
   const result = new URL(url);
   result.hash = '';
   result.search = '';
   result.searchParams.set('map', map);
+  if (area === 'space') result.searchParams.set('area', area);
   for (const key of ['top', 'bottom', 'left', 'right'] as const) result.searchParams.set(key, view[key].toFixed(3));
   if (imagery !== 'normal') result.searchParams.set('imagery', imagery);
   if (screen) result.searchParams.set('room', screen);
